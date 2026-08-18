@@ -410,8 +410,6 @@ footer p { margin: 4px 0; }
  var anchor = document.querySelector('section.index-content.framed') || main;
  anchor.parentNode.insertBefore(nav, anchor.nextSibling);
 
- }
-
  function activate(tab) {
  sections.forEach(function (s) {
  s.classList.toggle('active', s.dataset.tab === tab);
