@@ -131,7 +131,14 @@ section.index-content.framed> div {
  display: flex;
  align-items: center;
  justify-content: center; /* 让“蔡一碟”在 padding 区间内水平居中 */
+ gap: 12px; /* UFO 与文字的间距 */
  padding: 0 22px;
+}
+/* UFO 图标（内联 SVG，currentColor 跟随 title-block 的 color） */
+.title-icon {
+ flex: 0 0 auto;
+ height: 32px; /* 与 20px 文字 x-height 匹配 */
+ width: 32px; /* 显式 width，避免某些浏览器 fallback 到默认 300×150 */
 }
 /* Tapered stripes (16 stripes, 8px → 1px, 10px gaps) — pure CSS, identical at first paint */
 .title-stripes {
@@ -172,7 +179,8 @@ section.index-content.framed> div {
 
 @media (max-width: 720px) {
  .site-title { height: 44px; margin-bottom: 18px; }
- .title-block { font-size: 16px; padding: 0 16px; }
+ .title-block { font-size: 16px; padding: 0 16px; gap: 10px; }
+ .title-icon { height: 26px; }
 }
 @keyframes blink { 50% { opacity: 0; } }
 
@@ -324,7 +332,12 @@ footer p { margin: 4px 0; }
 <body>
 
 <div class="site-title logo" aria-label="网站标识">
- <span class="title-block">小蔡一碟</span>
+ <span class="title-block"><svg class="title-icon" viewBox="0 0 599 600" aria-hidden="true">
+  <g transform="translate(0,600) scale(0.05,-0.05)" fill="currentColor" stroke="none">
+   <path d="M5460 9370 c-1041 -163 -1930 -829 -2257 -1691 -17 -46 -39 -55 -216 -87 -979 -180 -1875 -557 -2252 -945 -205 -211 -261 -339 -261 -597 1 -930 1025 -1819 2641 -2291 142 -42 145 -44 145 -108 0 -585 1067 -1029 2560 -1065 1556 -37 2759 401 2833 1032 l12 99 173 53 c1532 473 2438 1210 2593 2111 71 408 -85 697 -539 1004 -427 288 -1343 615 -2011 717 -101 16 -161 34 -161 50 0 13 -45 114 -100 224 -541 1080 -1849 1698 -3160 1494z m856 -291 c1113 -122 2020 -902 2226 -1914 39 -187 -70 -268 -542 -403 -1543 -444 -4713 -200 -4630 355 187 1247 1499 2120 2946 1962z m-3249 -1883 c-48 -187 3 -358 139 -462 830 -633 4179 -701 5323 -108 293 152 378 296 324 549 -33 156 -55 154 397 36 1312 -342 2040 -829 1853 -1241 -233 -511 -1684 -949 -3763 -1134 -399 -36 -2259 -35 -2680 0 -1857 158 -3158 490 -3702 946 -535 447 202 1045 1782 1446 374 95 360 96 327 -32z m-1319 -2155 c2552 -844 7370 -709 9028 254 147 86 118 33 -108 -190 -671 -664 -1682 -1076 -3155 -1286 -2484 -354 -5077 167 -6228 1251 -297 279 -303 301 -50 176 116 -58 347 -150 513 -205z m2071 -1441 c279 -53 732 -113 1051 -139 143 -12 317 -26 386 -32 678 -57 1980 16 2730 154 372 68 379 67 323 -37 -463 -861 -4220 -851 -4705 12 -55 97 -64 95 215 42z"/>
+   <path d="M5089 8713 c-524 -195 -991 -626 -1202 -1111 -111 -253 -104 -362 22 -393 98 -25 129 6 232 225 244 522 641 872 1184 1045 130 42 176 162 91 240 -58 54 -171 52 -327 -6z"/>
+  </g>
+ </svg>小蔡一碟</span>
  <span class="title-stripes" aria-hidden="true"></span>
 </div>
 
