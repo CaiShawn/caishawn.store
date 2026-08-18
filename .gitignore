@@ -1,0 +1,13 @@
+# source font backups + subsetting tool (per user request: 不上传)
+res/
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
