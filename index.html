@@ -287,12 +287,18 @@ footer p { margin: 4px 0; }
 
 /* ---------- ICP / site meta / beian footer ---------- */
 .meta {
- text-align: center;
+ display: grid;
+ grid-template-columns: 1fr auto 1fr;
+ align-items: center;
+ gap: 1em;
  font-size: 0.78em;
  color: color-mix(in srgb, var(--foreground) 80%, transparent);
  margin: 5px 0;
 }
-.meta span { color: var(--accent); }
+.meta-side { color: inherit; }
+.meta-side.left { text-align: right; }
+.meta-side.right { text-align: left; }
+.meta-dot { color: var(--accent); }
 /* 回到顶部 + 左右导航箭头：居中按钮组 */
 .footer-nav {
  display: flex;
@@ -606,7 +612,11 @@ body.has-js .js-only { display: block; }
  </section>
 
 <footer>
- <p class="meta">since Mar 2026 &middot; vanilla HTML</p>
+ <p class="meta">
+  <span class="meta-side left">since Mar 2026</span>
+  <span class="meta-dot" aria-hidden="true">·</span>
+  <span class="meta-side right">vanilla HTML</span>
+ </p>
  <div class="footer-nav" role="group" aria-label="页面导航">
   <button class="nav-btn" data-nav="-1" type="button" aria-label="上一个">←</button>
   <button class="back-to-top" type="button" aria-label="回到顶部">回到顶部</button>
