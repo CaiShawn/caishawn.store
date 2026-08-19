@@ -806,7 +806,7 @@ body.has-js .js-only { display: block; }
   var out = document.getElementById('cmd-output');
   if (!input || !out) return;
 
-  var sections = [...document.querySelectorAll('main > section[data-tab]')];
+  /* sections / HOME / currentTab / goto 均从外层 ready() 闭包取值——不在这里重复声明 */
   var aboutData = {
    name: 'Cai Shawn',
    edu:  'TJU SE-grad',
