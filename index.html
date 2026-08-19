@@ -620,8 +620,8 @@ body.has-js .prompt-block-bottom { display: none; }
  function tick() {
  if (i>= text.length) return; // leave caret blinking
  cur.before(text[i++]);
- /* 呼吸节奏：基础延迟 + 随机微抖动，'-' 前更长停顿 */
- var delay = (text[i-1] === '-') ? 700 : 160 + Math.random() * 80;
+ /* 呼吸节奏：基础延迟 + 小幅随机抖动（平缓，不出现快冲），'-' 前更长停顿 */
+ var delay = (text[i-1] === '-') ? 700 : 220 + Math.random() * 40;
  setTimeout(tick, delay);
  }
  tick();
