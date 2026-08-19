@@ -268,10 +268,12 @@ body.has-js .tab-nav {
 /* static "> cd" prompt (visual, sits to the left of the link buttons) */
 body.has-js .tab-nav .nav-prompt {
  padding: 5px 9px;
- color: var(--accent);
+ color: color-mix(in srgb, var(--foreground) 60%, transparent);
  font-size: 0.78em;
  line-height: 1.2;
  white-space: nowrap;
+ cursor: default;
+ user-select: none;
 }
 body.has-js .tab-nav a {
  /* 内容等宽：按钮宽度 = 自身内容宽度，不参与 flex 拉伸 */
