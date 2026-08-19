@@ -164,10 +164,15 @@ section.index-content.framed sup.face {
  background: var(--accent);
  margin-left: 3px;
  vertical-align: -0.2em;
+ /* 默认仅静态 caret（项目链接中的 fallback）闪烁 */
  animation: blink 1s ease-in-out infinite;
 }
+/* 打字机创建的动态 caret：闪 3 次后停住（保持常亮） */
+.caret-typed {
+ animation: blink 1s ease-in-out 3;
+}
 @media (prefers-reduced-motion: reduce) {
- .caret { animation: none; }
+ .caret, .caret-typed { animation: none; }
 }
 
 /* ---------- friend card avatar fallback ---------- */
@@ -613,7 +618,7 @@ body.has-js .prompt-block-bottom { display: none; }
  if (reducedMotion || !text) return;
  el.textContent = '';
  var cur = document.createElement('span');
- cur.className = 'caret';
+ cur.className = 'caret caret-typed';
  cur.setAttribute('aria-hidden', 'true');
  el.appendChild(cur);
  var i = 0;
