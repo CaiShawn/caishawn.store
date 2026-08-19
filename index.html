@@ -167,9 +167,9 @@ section.index-content.framed sup.face {
  /* 默认仅静态 caret（项目链接中的 fallback）闪烁 */
  animation: blink 1s ease-in-out infinite;
 }
-/* 打字机创建的动态 caret：闪 3 次后停住（保持常亮） */
+/* 打字机创建的动态 caret：完成后持续慢闪 */
 .caret-typed {
- animation: blink 1.6s ease-in-out 3;
+ animation: blink 1.6s ease-in-out infinite;
 }
 @media (prefers-reduced-motion: reduce) {
  .caret, .caret-typed { animation: none; }
