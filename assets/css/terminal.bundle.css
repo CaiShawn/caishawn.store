@@ -1,603 +1,207 @@
 /* ---------------------------------------------------------------- *
- * HEAD — synced from assets/css/terminal.css (reference archive)    *
+ * terminal.bundle.css — locally vendored subset of panr/terminal-css *
+ * Source of truth (kept as reference archive):                     *
+ *   assets/css/terminal.css                                         *
+ *                                                                  *
+ * Selectors that the original terminal-css provided but the HTML    *
+ * never exercises (settings UI, dialog, fieldset, code/kbd/pre,    *
+ * table, input[type=checkbox|color|radio], select, mark, [hidden], *
+ * hanchor, etc.) have been removed.                                 *
+ *                                                                  *
+ * The page's inline <style> overrides much of what remains; this    *
+ * bundle is the base that other elements inherit / fall back on.    *
  * ---------------------------------------------------------------- */
 
-/* Fira Code: https://github.com/tonsky/FiraCode */
-@import url('https://cdn.staticdelivr.com/gfonts/css2?family=Fira+Code:wght@300..700&display=swap');
-
+/* === variables (kept identical to the inline :root in index.html) === */
 :root {
-  --background: #153489;
-  --foreground: #eceae5;
-  --accent: #5ea5ee;
-  --radius: 0;
-  --font-size: 1rem;
-  --line-height: 1.54em;
+ --background:  #153489;
+ --foreground:  #eceae5;
+ --accent:      #5ea5ee;
+ --radius:      0;
+ --font-size:   1rem;
+ --line-height: 1.54em;
 }
 
-/* ---------- heading scale: h3 must read smaller than body blocks ---------- */
+/* === heading scale === */
 h1 {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: calc(var(--font-size) * 0.2);
+ text-decoration: underline;
+ text-decoration-thickness: 2px;
+ text-underline-offset: calc(var(--font-size) * 0.2);
 }
-
 h1, h2 {
-  text-transform: uppercase;
+ text-transform: uppercase;
 }
-
 h1, h2, h3, h4, h5, h6 {
-  display: block;
-  letter-spacing: 0.04em;
+ display: block;
+ letter-spacing: 0.04em;
 }
-
-h1 { font-size: calc(var(--font-size) * 1.4); }
+h1 { font-size: calc(var(--font-size) * 1.4);  }
 h2 { font-size: calc(var(--font-size) * 1.25); }
 h3 { font-size: calc(var(--font-size) * 1.05); }
 h4, h5, h6 { font-size: calc(var(--font-size) * 1); }
-/* JetBrains Mono: https://github.com/JetBrains/JetBrainsMono */
-[hidden] {
-  display: none !important;
-}
 
-.start-question {
-  margin-bottom: 20px;
-}
-
-.start-question p {
-  margin-bottom: 10px;
-}
-
-.start-question ul {
-  display: flex;
-  flex-direction: column;
-  list-style: none;
-  padding: 0;
-  margin: 0 0 20px;
-  gap: 10px;
-}
-
-.settings {
-  margin-bottom: 40px;
-}
-
-.settings-table {
-  border: 2px solid var(--foreground);
-}
-
-.settings-row {
-  display: flex;
-}
-
-.settings-col {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.settings-cell {
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex: 1;
-  padding: 10px;
-}
-
-.settings-cell::before {
-  content: "";
-  position: absolute;
-  width: 1px;
-  height: 100%;
-  left: -2px;
-  bottom: 0;
-  border-left: 2px solid var(--foreground);
-}
-
-.settings-cell::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 1px;
-  left: 0;
-  bottom: -2px;
-  border-bottom: 2px solid var(--foreground);
-}
-
-.settings-cell > * {
-  display: flex;
-  flex: 1;
-  align-items: center;
-}
-
-.settings-label {
-  padding-left: 5px;
-}
-
-.settings-input {
-  width: 100%;
-}
-
-.settings #attrs {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.settings label {
-  display: inline-flex;
-  align-items: center;
-}
-
-.settings input,
-.settings select {
-  width: 100%;
-  line-height: 1;
-  padding: 8px;
-  min-height: 30px;
-}
-
-.settings input[type="color"] {
-  padding: 0;
-}
-
-.settings input[type="checkbox"] {
-  width: 10px !important;
-  height: 10px !important;
-  padding: 10px;
-  min-height: auto;
-}
-
-.settings .settings-wrapper {
-  border: 2px solid var(--foreground);
-}
-
-.settings #assets-preview {
-  margin-bottom: 20px;
-}
-
-.settings #assets-preview svg {
-   border: 2px solid
-}
-
-.settings .terminal-info {
-  border: 1px dashed var(--accent);
-  padding: 2px 4px;
-  margin-bottom: 5px;
-}
-
-.hanchor {
-  position: absolute;
-  color: var(--accent);
-  font-weight: normal;
-  text-decoration: none;
-  margin-left: 10px;
-  visibility: hidden;
-}
-
-h1:hover .hanchor,
-h2:hover .hanchor,
-h3:hover .hanchor,
-h4:hover .hanchor {
-  visibility: visible;
-}
-
+/* === section container: top dashed border + 25px breathing room === */
 section {
-  border-top: 1px dashed color-mix(in srgb, var(--foreground) 20%, transparent);
-  padding-top: 25px;       /* 固有的上padding = 25 */
-  padding-bottom: 25px;
-  padding-left: 0;
-  padding-right: 0;
-
-  > :first-child {
-    margin-top: 0;
-  }
-
-  > :last-child {
-    margin-bottom: 0;
-  }
+ border-top: 1px dashed color-mix(in srgb, var(--foreground) 20%, transparent);
+ padding-top: 25px;
+ padding-bottom: 25px;
+ padding-left: 0;
+ padding-right: 0;
 }
+section > :first-child { margin-top: 0; }
+section > :last-child  { margin-bottom: 0; }
 
-dialog {
-  background: var(--background);
-  border: 2px solid var(--accent);
-  color: var(--foreground);
-  padding: 20px;
-  margin: auto;
-  max-width: 600px;
-  z-index: 99;
+/* === reset + base typography === */
+html { box-sizing: border-box; }
+*, *::before, *::after {
+ box-sizing: inherit;
+ margin: 0;
+ padding: 0;
 }
-
-dialog h2 {
-  margin-top: 0;
-}
-
-dialog::backdrop {
-  background: rgba(0, 0, 0, .8);
-}
-
-.dialog-trigger {
-  display: inline-block;
-  margin-left: 5px;
-  font-weight: normal;
-  color: var(--accent);
-  cursor: pointer;
-}
-
-@media screen and (max-width: 600px) {
-  .settings-row {
-    flex-direction: column;
-  }
-
-  .settings-col {
-    width: 100%;
-  }
-
-  .settings button {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-
-  .settings button:last-child {
-    margin-bottom: 0;
-  }
-}
-/* [[ FONT ]] */
-
-/* [[ VARIABLES ]] */
-
-html {
-  box-sizing: border-box;
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-  margin: 0;
-  padding: 0;
-}
-
 body {
-  font-family:
-    monospace,
-    Monaco,
-    Consolas,
-     "Ubuntu Mono",
-    monospace;
-  font-size: var(--font-size);
-  font-weight: 400;
-  line-height: var(--line-height);
-  background-color: var(--background);
-  color: var(--foreground);
-  text-rendering: optimizeLegibility;
-  font-variant-ligatures: contextual;
-  -webkit-overflow-scrolling: touch;
-  -webkit-text-size-adjust: 100%;
-  margin: 0;
-  padding: 0;
+ font-family: monospace, Monaco, Consolas, "Ubuntu Mono", monospace;
+ font-size: var(--font-size);
+ font-weight: 400;
+ line-height: var(--line-height);
+ background-color: var(--background);
+ color: var(--foreground);
+ text-rendering: optimizeLegibility;
+ font-variant-ligatures: contextual;
+ -webkit-overflow-scrolling: touch;
+ -webkit-text-size-adjust: 100%;
 }
 
-/* [[ HEADING ]] */
-
+/* === block elements get a default 25px vertical margin === */
 h1, h2, h3, h4, h5, h6,
 p, ul, ol,
 img, figure, video,
-table {
-  margin: 25px 0;
-}
+table { margin: 25px 0; }
 
-a {
-  color: var(--accent);
-}
+a { color: var(--accent); }
 
+/* === buttons (generic terminal accent border; inline overrides per site) === */
 button {
-  position: relative;
-  font: inherit;
-  font-weight: bold;
-  text-decoration: none;
-  text-align: center;
-  background: transparent;
-  color: var(--accent);
-  padding: 5px 18px;
-  border: 4px solid var(--accent);
-  border-radius: var(--radius);
-  transition: background 0.15s linear;
-  appearance: none;
-  cursor: pointer;
-  outline: none;
+ position: relative;
+ font: inherit;
+ font-weight: bold;
+ text-decoration: none;
+ text-align: center;
+ background: transparent;
+ color: var(--accent);
+ padding: 5px 18px;
+ border: 4px solid var(--accent);
+ border-radius: var(--radius);
+ transition: background 0.15s linear;
+ appearance: none;
+ cursor: pointer;
+ outline: none;
 }
-
-button:hover {
-  background: color-mix(in srgb, var(--accent) 15%, transparent);
-}
-
+button:hover { background: color-mix(in srgb, var(--accent) 15%, transparent); }
 button:focus-visible,
 a:focus-visible {
-  outline: 1px solid var(--accent);
-  outline-offset: 2px;
+ outline: 1px solid var(--accent);
+ outline-offset: 2px;
 }
 
-fieldset {
-  display: inline-block;
-  border: 2px solid var(--foreground);
-  border-radius: calc(var(--radius) * 1.6);
-  padding: 10px;
-}
+/* === forms — only <input> is exercised (cmd-input); === */
+/* === textarea/select/fieldset/checkboxes/radios removed, see header === */
+label { display: inline-block; }
+label input { margin-top: 0; }
 
-fieldset *:first-child {
-  margin-top: 0;
+input {
+ background: transparent;
+ color: var(--foreground);
+ border: 1px solid var(--foreground);
+ border-radius: var(--radius);
+ padding: 10px;
+ font: inherit;
+ appearance: none;
 }
-
-fieldset input,
-fieldset select,
-fieldset textarea,
-fieldset label,
-fieldset button {
-  margin-top: calc(var(--line-height) * 0.5);
-  width: 100%;
-}
-
-label {
-  display: inline-block;
-}
-
-label input {
-  margin-top: 0;
-}
-
-input,
-textarea,
-select {
-  background: transparent;
-  color: var(--foreground);
-  border: 1px solid var(--foreground);
-  border-radius: var(--radius);
-  padding: 10px;
-  font: inherit;
-  appearance: none;
-}
-
-input[type="checkbox"] {
-  width: auto;
-}
-
 input:focus-visible,
-input:active,
-textarea:focus-visible,
-textarea:active,
-select:focus-visible,
-select:active {
-  border-color: var(--accent);
-  outline: 1px solid var(--accent);
-  outline-offset: 2px;
+input:active {
+ border-color: var(--accent);
+ outline: 1px solid var(--accent);
+ outline-offset: 2px;
 }
+input:active { box-shadow: none; }
 
-input:active,
-textarea:active,
-select:active {
-  box-shadow: none;
-}
-
-select {
-  background-image: linear-gradient(
-      45deg,
-      transparent 50%,
-      var(--foreground) 50%
-    ),
-    linear-gradient(135deg, var(--foreground) 50%, transparent 50%);
-  background-position: calc(100% - 20px), calc(100% - 15px);
-  background-size:
-    5px 5px,
-    5px 5px;
-  background-repeat: no-repeat;
-  padding-right: 40px;
-}
-
-select option {
-  background: var(--background);
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-  vertical-align: middle;
-  padding: 10px;
-  box-shadow: inset 0 0 0 3px var(--background);
-}
-
-input[type="radio"] {
-  display: inline-block;
-  width: 10px !important;
-  height: 10px !important;
-  border-radius: 20px;
-}
-
-input[type="checkbox"]:checked,
-input[type="radio"]:checked {
-  background: var(--accent);
-}
-
+/* === figures and standalone images (about section uses one of each) === */
 img {
-  display: block;
-  max-width: 100%;
-  border: 8px solid var(--accent);
-  border-radius: var(--radius);
-  padding: 8px;
-  overflow: hidden;
+ display: block;
+ max-width: 100%;
+ border: 8px solid var(--accent);
+ border-radius: var(--radius);
+ padding: 8px;
+ overflow: hidden;
 }
-
-figure img,
-figure video {
-  margin-bottom: 0;
-}
-
+figure img, figure video { margin-bottom: 0; }
 figure figcaption {
-  background: var(--accent);
-  color: var(--background);
-  text-align: center;
-  font-size: 1em;
-  font-weight: normal;
-  margin-top: -8px;
-  border-radius: 0 0 var(--radius) var(--radius);
+ background: var(--accent);
+ color: var(--background);
+ text-align: center;
+ font-size: 1em;
+ font-weight: normal;
+ margin-top: -8px;
+ border-radius: 0 0 var(--radius) var(--radius);
 }
 
-ul,
-ol {
-  margin-left: 4ch;
-  padding: 0;
-}
+/* === lists ===
+ *  ul/ol base indent + reset,
+ *  nested-list margin override (4 sections in habits use <li><h4><ul>),
+ *  marker coloring for the dot accent,
+ *  relative positioning so future ::before / ::after anchors work.
+ */
+ul, ol { margin-left: 4ch; padding: 0; }
+ul ul, ul ol, ol ul, ol ol { margin-top: 0; }
+li::marker { color: var(--accent); }
+ul li, ol li { position: relative; }
 
-ul ul,
-ul ol,
-ol ul,
-ol ol {
-  margin-top: 0;
-}
-
-li::marker {
-  color: var(--accent);
-}
-
-ul li,
-ol li {
-  position: relative;
-}
-
-code,
-kbd {
-  font-family:
-    monospace !important;
-  font-feature-settings: normal;
-  background: color-mix(in srgb, var(--foreground) 5%, transparent);
-  color: color-mix(in srgb, var(--foreground) 5%, var(--accent));
-  padding: 0 6px;
-  margin: 0 2px;
-  font-size: 0.95em;
-}
-
-code {
-  border: 1px solid color-mix(in srgb, var(--foreground) 25%, transparent);
-}
-
-kbd {
-  border-top: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-  border-left: 1px solid var(--accent);
-  border-right: 1px solid var(--accent);
-  border-bottom: 4px solid var(--accent);
-  border-radius: 4px;
-}
-
-code code {
-  background: transparent;
-  padding: 0;
-  margin: 0;
-}
-
-pre {
-  tab-size: 4;
-  background: color-mix(in srgb, var(--foreground) 5%, transparent) !important;
-  color: color-mix(in srgb, var(--foreground) 5%, var(--accent));
-  padding: 20px 10px;
-  font-size: 0.95em !important;
-  overflow: auto;
-  border-radius: var(--radius);
-  border: 1px solid color-mix(in srgb, var(--foreground) 25%, transparent);
-}
-
-pre code {
-  background: none !important;
-  margin: 0;
-  padding: 0;
-  font-size: inherit;
-  border: none;
-}
-
-sup {
-  line-height: 0;
-}
-
+/* === inline notations: <sup class="face"> (1) + <sub> (2) + <abbr> (5) === */
+sup { line-height: 0; }
+sub { bottom: -0.25em; }
+sup { top: -0.25em; }
 abbr {
-  position: relative;
-  text-decoration-style: wavy;
-  text-decoration-color: var(--accent);
-  cursor: help;
+ position: relative;
+ text-decoration-style: wavy;
+ text-decoration-color: var(--accent);
+ cursor: help;
 }
 
-sub {
-  bottom: -0.25em;
-}
-
-sup {
-  top: -0.25em;
-}
-
-mark {
-  background: color-mix(in srgb, var(--accent) 45%, transparent);
-  color: var(--foreground);
-}
-
+/* === blockquote ===
+ *  4 blockquotes across sections (plans, habits, friends, about).
+ */
 blockquote {
-  position: relative;
-  border-top: 1px solid var(--accent);
-  border-bottom: 1px solid var(--accent);
-  margin: 0;
-  padding: 25px;
+ position: relative;
+ border-top: 1px solid var(--accent);
+ border-bottom: 1px solid var(--accent);
+ margin: 0;
+ padding: 25px;
 }
-
 blockquote:before {
-  content: ">";
-  display: block;
-  position: absolute;
-  left: 0;
-  color: var(--accent);
+ content: ">";
+ display: block;
+ position: absolute;
+ left: 0;
+ color: var(--accent);
 }
+blockquote p:first-child { margin-top: 0; }
+blockquote p:last-child  { margin-bottom: 0; }
 
-blockquote p:first-child {
-  margin-top: 0;
-}
-
-blockquote p:last-child {
-  margin-bottom: 0;
-}
-
-table {
-  table-layout: auto;
-  border-collapse: collapse;
-}
-
-table,
-th,
-td {
-  border: 2px solid var(--foreground);
-  padding: 10px;
-}
-
-th {
-  border-style: solid;
-  color: var(--foreground);
-  text-align: left;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
+/* === hr (one use in about after the figure) === */
 hr {
-  width: 100%;
-  border: none;
-  background: var(--accent);
-  height: 2px;
+ width: 100%;
+ border: none;
+ background: var(--accent);
+ height: 2px;
 }
 
-/* Bold elements */
-
+/* === bold-weight scoping ===
+ *  th is kept in the selector list because dropping it would mean
+ *  splitting an otherwise tidy shared selector group. The selector
+ *  is a no-op here (no <table>), but the inheritance behavior of
+ *  the rest is unchanged.
+ */
 h1, h2, h3, h4, h5, h6,
 b, strong,
 th,
-button {
-  font-weight: 600;
-}
-:root {
-  --background: #1a170f;
-  --foreground: #eceae5;
-  --accent: #eec35e;
-  --font-size: 1rem;
-  --line-height: 1.54em;
-  --radius: 0px;
-}
+button { font-weight: 600; }
