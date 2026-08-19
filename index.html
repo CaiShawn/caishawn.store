@@ -159,7 +159,7 @@ section.index-content.framed sup.face {
 /* typewriter caret */
 .caret {
  display: inline-block;
- width: 0.1em;
+ width: 0.2em;
  height: 1em;
  background: var(--accent);
  margin-left: 3px;
@@ -620,8 +620,8 @@ body.has-js .prompt-block-bottom { display: none; }
  function tick() {
  if (i>= text.length) return; // leave caret blinking
  cur.before(text[i++]);
- /* 遇到 '-' 前停顿一下，让 meta 后缀作为“补充信息”出现 */
- var delay = (text[i-1] === '-') ? 700 : 80;
+ /* 呼吸节奏：基础延迟 + 随机微抖动，'-' 前更长停顿 */
+ var delay = (text[i-1] === '-') ? 700 : 160 + Math.random() * 80;
  setTimeout(tick, delay);
  }
  tick();
