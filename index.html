@@ -701,11 +701,12 @@ body.has-js .js-only { display: block; }
  try { history.replaceState(null, '', hashFor(tab)); }
  catch (e) { location.hash = hashFor(tab); }
  }
- /* goto = activate 路由 + 跳页副作用（清空 cmd-output） */
- function goto(tab) {
+ /* goto = activate 路由 + 清空 cmd-output。scroll=true 时额外滚到页首。 */
+ function goto(tab, scroll) {
  activate(tab);
  var out = document.getElementById('cmd-output');
  if (out) out.replaceChildren();
+ if (scroll) window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
  }
 
  // initial: from hash, else home
@@ -731,8 +732,7 @@ body.has-js .js-only { display: block; }
   var i = ORDER.indexOf(currentTab);
   // 箭头在首页隐藏：调用 navTo 时 currentTab 必然在 ORDER 中
   var target = ORDER[(i + dir + ORDER.length) % ORDER.length];
-  goto(target);
-  window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+  goto(target, true);
  }
  var backTop = document.querySelector('.back-to-top');
  if (backTop) {
@@ -833,6 +833,54 @@ body.has-js .js-only { display: block; }
     parent.appendChild(s);
    }
 
+   /* ---- 命令注册表 ----
+    * 每个 handler 纯函数: ({ cmd, head, rest }) → result
+    * result 字段（均可选）：
+    *   lines  要追加的 <p class="line[...]"> 节点数组
+    *   goto   切到这个 tab
+    *   scroll 切 tab 后是否滚到页首
+    *   clear  是否清空 cmd-output
+    */
+   var commands = {
+    help: function () { return { lines: HELP.map(line) }; },
+    whoami: function () {
+     var p = document.createElement('p');
+     p.className = 'line';
+     appendKw(p, 'name'); appendText(p, ': ' + aboutData.name + ' ');
+     appendKw(p, 'edu');  appendText(p, ': ' + aboutData.edu + ' ');
+     appendKw(p, 'loc');  appendText(p, ': ' + aboutData.loc);
+     return { lines: [p] };
+    },
+    cat: function (ctx) {
+     return /motto\.txt/.test(ctx.cmd)
+      ? { lines: [line(aboutData.bio)] }
+      : { lines: [line("cat: try 'motto.txt'", 'err')] };
+    },
+    ls: function () {
+     var items = sections.map(function (s) { return '~/' + s.dataset.tab; });
+     return { lines: [line('~ ' + items.join(' '))] };
+    },
+    pwd: function () {
+     return { lines: [line(currentTab === HOME ? '~' : '~/' + currentTab)] };
+    },
+    cd: function (ctx) {
+     var target = ctx.rest.replace(/[\/~]/g, '');
+     var resolved;
+     if (target === '' || target === '~')                          resolved = HOME;
+     else if (sections.some(function (s) { return s.dataset.tab === target; })) resolved = target;
+     if (!resolved) return { lines: [line("cd: no such section: " + target + ". try 'ls'.", 'err')] };
+     return {
+      lines: [line(resolved === HOME ? '→ ~' : '→ ~/' + resolved, 'ok')],
+      goto:  resolved,
+      scroll: true,
+     };
+    },
+    clear: function () { return { clear: true }; },
+   };
+   /* 别名：'?' = help；'cls' = clear */
+   commands['?']   = commands.help;
+   commands.cls    = commands.clear;
+
    function run(raw) {
     var cmd = raw.trim();
     if (!cmd) return;
@@ -841,53 +889,16 @@ body.has-js .js-only { display: block; }
     var head = parts[0].toLowerCase();
     var rest = parts.slice(1).join(' ');
 
-    switch (head) {
-     case 'help':
-     case '?':
-      HELP.forEach(function (t) { append(line(t)); });
-      break;
-     case 'whoami': {
-      var p = document.createElement('p');
-      p.className = 'line';
-      appendKw(p, 'name'); appendText(p, ': ' + aboutData.name + ' ');
-      appendKw(p, 'edu');  appendText(p, ': ' + aboutData.edu + ' ');
-      appendKw(p, 'loc');  appendText(p, ': ' + aboutData.loc);
-      append(p);
-      break;
-     }
-     case 'cat':
-      if (/motto\.txt/.test(cmd))   append(line(aboutData.bio));
-      else                           append(line("cat: try 'motto.txt'", 'err'));
-      break;
-     case 'ls':
-      var items = sections.map(function (s) { return '~/' + s.dataset.tab; });
-      append(line('~ ' + items.join(' ')));
-      break;
-     case 'pwd':
-      append(line(currentTab === HOME ? '~' : '~/' + currentTab));
-      break;
-     case 'cd': {
-      var target = rest.replace(/[\/~]/g, '');
-      /* 解析目标；resolved === undefined 表示不合法 */
-      var resolved;
-      if (target === '' || target === '~')                          resolved = HOME;
-      else if (sections.some(function (s) { return s.dataset.tab === target; })) resolved = target;
-      if (!resolved) {
-       append(line("cd: no such section: " + target + ". try 'ls'.", 'err'));
-       break;
-      }
-      goto(resolved);
-      append(line(resolved === HOME ? '→ ~' : '→ ~/' + resolved, 'ok'));
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      break;
-     }
-     case 'clear':
-     case 'cls':
-      out.replaceChildren();
-      break;
-     default:
-      append(line("command not found: " + head + ". try 'help'.", 'err'));
+    var handler = commands[head];
+    if (!handler) {
+     append(line("command not found: " + head + ". try 'help'.", 'err'));
+     return;
     }
+    var r = handler({ cmd: cmd, head: head, rest: rest }) || {};
+    /* 顺序：先 goto（自带清空）→ 后追加 lines → 保留 goto 后才追加的反馈行可见 */
+    if (r.goto) goto(r.goto, r.scroll);
+    else if (r.clear) out.replaceChildren();
+    (r.lines || []).forEach(append);
    }
    return { run: run };
   }
