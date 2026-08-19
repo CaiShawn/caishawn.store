@@ -305,7 +305,10 @@ footer p { margin: 4px 0; }
  gap: 2px;
  margin: 6px 0 4px;
 }
-.app[data-tab="home"] .footer-nav { display: none; } /* 首页隐藏导航箭头与“回到顶部” */
+/* no-JS 隐藏整个 footer-nav：箭头在堆叠视图里没有可去的上一个/下一个，回到顶部也无意义 */
+body:not(.app) .footer-nav { display: none; }
+/* 首页（app 模式下）隐藏导航箭头与“回到顶部” */
+.app[data-tab="home"] .footer-nav { display: none; }
 .footer-nav button {
  padding: 2px 8px;
  font: inherit;
@@ -382,21 +385,14 @@ footer p { margin: 4px 0; }
  white-space: nowrap;
 }
 
-/* ---------- per-section command header (stacked view only) ---------- */
-.cmd-line {
- display: block;
- margin: 25px 0 -10px 0;
- color: color-mix(in srgb, var(--foreground) 55%, transparent);
- font-size: 0.82em;
- letter-spacing: 0.02em;
-}
-.cmd-line::before {
- content: "$ ";
- color: var(--foreground);
- opacity: 0.7;
- margin-right: 2px;
-}
-.app .cmd-line { display: none; }
+/* ---------- per-section command header (decorative, removed) ----------
+ * 原始：<p class="cmd-line">cat X.md</p> + ::before '>' 作为“看起来在打命令”的装饰。
+ * 已从 4 个 section 里删除全部 4 处 HTML 节点；保留这条规则是为了有人
+ * 重新插入该类名时立刻生效（“档位”保证），并备忘它曾存在的用途：
+ *   · JS 模式下用真终端（.cmd-form / .cmd-output），装饰行没有意义。
+ *   · no-JS 模式下没有可用输入，装饰行会误导（看起来能输但不能）。
+ */
+.cmd-line { display: none; }
 
 /* ---------- interactive prompt (after <main>) ---------- */
 .js-only { display: none; }
@@ -505,7 +501,6 @@ footer p { margin: 4px 0; }
 </section>
 
 <main id="main"><section id="plans" data-tab="plans" aria-label="规划">
- <p class="cmd-line">cat plans.md</p>
  <h2>PLANS</h2>
  <blockquote><p>淫慢则不能励精，险躁则不能治性。</p></blockquote>
  <h3>学习科目</h3>
@@ -550,7 +545,6 @@ footer p { margin: 4px 0; }
  <h3>目标</h3><ol><li><p>掌握专业知识，通过网络学习和实践，提高理论水平和动手能力。</p></li><li><p>把自己的兴趣点发展成爱好，不需要多么专业，只要能跟随自己的想法即可。</p></li><li><p>好好去度过每一天的生活。希望能成长为一个能被依靠的人物。</p></li></ol>
  </section>
  <section id="habits" data-tab="habits" aria-label="爱好一览">
- <p class="cmd-line">cat habits.md</p>
  <h2>HABITS</h2>
  <blockquote><p>You are what you eat.</p></blockquote><p>爱好广泛，广而不精。以笔书写，留作纪念。</p><h3>游戏</h3>
  <ul class="subjects">
@@ -594,7 +588,6 @@ footer p { margin: 4px 0; }
  </ul><p class="aside" title="兴趣即回声，探索即再发现。">// aside</p>
  </section>
  <section id="friends" data-tab="friends" aria-label="友链">
- <p class="cmd-line">cat friends.md</p>
  <h2>FRIENDS</h2>
  <blockquote><p lang="ja">何処にいても、人と人は繋がっている。</p></blockquote>
  <div class="friend-card">
@@ -611,7 +604,6 @@ footer p { margin: 4px 0; }
 
  </section>
 <section id="about" data-tab="about" aria-label="关于">
- <p class="cmd-line">cat about.md</p>
  <h2>ABOUT</h2>
  <blockquote><p>成为可供咀嚼之物乃是虚妄。</p></blockquote>
  <figure><img src="assets/img/42f05fd039bcc.webp" alt="Needy Girl Overdose 插画 by X@MikaPikaZo" width="4096" height="2289" loading="lazy" decoding="async" style="height: auto;"><figcaption><span><strong>Needy Girl Overdose</strong></span><strong> </strong><sub>by. X@MikaPikaZo</sub></figcaption></figure><hr><h3 lang="ja">個人紹介</h3><p>毕业于某天津大学、SE本科生。</p><p>居家少年，</p><p>生活在逐渐转变。</p><h3 lang="ja">内容物</h3><p>学习物（经常性放弃）与兴趣物（习惯性沉迷）。</p>
