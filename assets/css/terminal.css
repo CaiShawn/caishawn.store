@@ -53,11 +53,16 @@ h1, h2 {
   text-transform: uppercase;
 }
 
+/* ---------- heading scale: h3 must read smaller than body blocks ---------- */
 h1, h2, h3, h4, h5, h6 {
   display: block;
-  font-size: calc(var(--font-size) * 1.1);
   letter-spacing: 0.04em;
 }
+
+h1 { font-size: calc(var(--font-size) * 1.4); }
+h2 { font-size: calc(var(--font-size) * 1.25); }
+h3 { font-size: calc(var(--font-size) * 1.05); }
+h4, h5, h6 { font-size: calc(var(--font-size) * 1); }
 
 h1, h2, h3, h4, h5, h6,
 p, ul, ol,

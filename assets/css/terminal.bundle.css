@@ -1,25 +1,39 @@
-/* 页面字体仅依赖本地 Sarasa Mono SC TTF（在 index.html @font-face 中加载） */
+/* ---------------------------------------------------------------- *
+ * HEAD — synced from assets/css/terminal.css (reference archive)    *
+ * ---------------------------------------------------------------- */
+
+/* Fira Code: https://github.com/tonsky/FiraCode */
+@import url('https://cdn.staticdelivr.com/gfonts/css2?family=Fira+Code:wght@300..700&display=swap');
+
+:root {
+  --background: #153489;
+  --foreground: #eceae5;
+  --accent: #5ea5ee;
+  --radius: 0;
+  --font-size: 1rem;
+  --line-height: 1.54em;
+}
+
+/* ---------- heading scale: h3 must read smaller than body blocks ---------- */
 h1 {
-  font-size: calc(var(--font-size) * 1.45);
-  letter-spacing: 0;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: calc(var(--font-size) * 0.2);
 }
 
-h2 {
-  font-size: calc(var(--font-size) * 1.35);
-  letter-spacing: 0;
+h1, h2 {
+  text-transform: uppercase;
 }
 
-h3 {
-  font-size: calc(var(--font-size) * 1.15);
-  letter-spacing: 0;
+h1, h2, h3, h4, h5, h6 {
+  display: block;
+  letter-spacing: 0.04em;
 }
 
-h4,
-h5,
-h6 {
-  font-size: calc(var(--font-size) * 1);
-  letter-spacing: 0;
-}
+h1 { font-size: calc(var(--font-size) * 1.4); }
+h2 { font-size: calc(var(--font-size) * 1.25); }
+h3 { font-size: calc(var(--font-size) * 1.05); }
+h4, h5, h6 { font-size: calc(var(--font-size) * 1); }
 /* JetBrains Mono: https://github.com/JetBrains/JetBrainsMono */
 [hidden] {
   display: none !important;
