@@ -83,14 +83,7 @@ section.index-content.framed {
  margin: 50px 0 35px 0;
 }
 
-/* ---------- whoami prompt (after framed intro, before <main>) ---------- */
-.prompt {
- font-family: 'Fira Code', 'Sarasa Mono SC', monospace;
- font-size: 0.82em !important;
- color: color-mix(in srgb, var(--foreground) 60%, transparent) !important;
- margin: 30px 0;
-}
-.prompt .k { color: var(--accent); font-weight: 600; }
+/* (pre.prompt was replaced by the interactive cmd-form in prompt-block — see js-only rule below) */
 
 /* aside: end-of-section subtle note (lives at the tail of habits) */
 .aside {
@@ -154,12 +147,7 @@ section.index-content.framed sup.face {
  outline: 2px solid var(--foreground);
  outline-offset: 2px;
 }
-/* 文字微调：在 SVG 中线基础上轻微下移 */
-.title-text {
- display: inline-block;
- padding-top: 2px;
- line-height: 1;
-}
+/* .title-text: element removed */
 /* UFO 图标（内联 SVG，currentColor 跟随 title-block 的 color） */
 .title-icon {
  flex: 0 0 auto;
@@ -237,64 +225,19 @@ h2 {
  margin: 32px 0 14px;
 }
 
-/* ---------- progressive tab nav ---------- */
-/* default (no JS): nav hidden, all sections stacked & fully readable */
-.tab-nav { display: none; }
+/* ---------- progressive section routing ---------- */
+/* default (no JS): all sections stacked & fully readable */
 main> section { display: block; padding-top: 24px; }
-
-/* once JS has marked body, enable tab UI */
-body.has-js .tab-nav {
- display: flex;
- flex-wrap: wrap;
- align-items: baseline;
- gap: 8px;
- /* border-bottom removed (looks unbalanced without — try without) */
- margin: 16px 0;
- padding: 0;
-}
-/* static "> cd" prompt (visual, sits to the left of the link buttons) */
-body.has-js .tab-nav .nav-prompt {
- padding: 5px 9px;
- color: color-mix(in srgb, var(--foreground) 60%, transparent);
- font-size: 0.78em;
- line-height: 1.2;
- white-space: nowrap;
- cursor: default;
- user-select: none;
-}
-body.has-js .tab-nav a {
- /* 内容等宽：按钮宽度 = 自身内容宽度，不参与 flex 拉伸 */
- flex: 0 0 auto;
- /* 上下 6px 对称，避开 line-height 拉伸 */
- padding: 5px 9px;
- /* border removed — try a borderless look */
- border: 1px solid transparent;
- text-decoration: none;
- white-space: nowrap;
- line-height: 1.2;
- color: var(--accent);
- font-size: 0.78em;
-}
-body.has-js .tab-nav a:hover {
- background: color-mix(in srgb, var(--accent) 15%, transparent);
-}
-body.has-js .tab-nav a.active {
- background: var(--accent); color: var(--background);
- border-color: var(--accent);
-}
-/* in JS mode: hide non-active sections */
+/* JS mode: show only the active section (home view hides all — see rule below) */
 body.has-js main> section { display: none; padding-top: 32px; }
 body.has-js main> section.active { display: block; }
-/* (h2 inside active section no longer needed — section aria-label takes over a11y) */
 
 /* ---------- home view: show framed + whoami + project-link, hide all main sections ---------- */
 body.has-js.home section.index-content.framed { display: block; }
-body.has-js.home pre.prompt { display: block; }
 body.has-js.home p.project-link { display: block; }
 body.has-js.home main > section { display: none !important; }
 /* in any non-home tab: hide framed + whoami + project-link (section.active already controls the section) */
 body.has-js:not(.home) section.index-content.framed { display: none; }
-body.has-js:not(.home) pre.prompt { display: none; }
 body.has-js:not(.home) p.project-link { display: none; }
 
 /* ---------- friend card ---------- */
@@ -381,37 +324,161 @@ footer p { margin: 4px 0; }
  display: inline-block;
  vertical-align: -2px;
 }
+/* ---------- visually-hidden helper ---------- */
+.visually-hidden {
+ position: absolute;
+ width: 1px; height: 1px;
+ padding: 0; margin: -1px;
+ overflow: hidden; clip: rect(0,0,0,0);
+ white-space: nowrap; border: 0;
+}
+
+/* ---------- site-title v2: path + UFO(floating, with trail) + brand ---------- */
+/* title-block now only contains title-path — original CSS rules apply unmodified */
+.title-stripes { flex: 0 0 222px; }
+.title-spacer { flex: 1; }
+@media (max-width: 720px) {
+ .title-stripes { display: none; }
+}
+.title-path {
+ font-weight: 500;
+ font-size: 0.95em;
+ letter-spacing: 0.01em;
+ white-space: nowrap;
+}
+.title-icon-wrap {
+ display: inline-flex;
+ align-items: center;
+ gap: 4px;
+ padding: 0 12px;
+ background: var(--accent);
+ color: var(--background);
+ animation: ufo-float 3.6s ease-in-out infinite;
+}
+@keyframes ufo-float {
+ 0%, 100% { transform: translate(0, 0); }
+ 50%      { transform: translate(2px, -3px); }
+}
+.title-trail {
+ display: inline-block;
+ width: 18px;
+ height: 4px;
+ background: radial-gradient(circle, currentColor 0.8px, transparent 1.4px) 0 50% / 5px 4px repeat-x;
+ opacity: 0.55;
+ flex: 0 0 auto;
+}
+@media (prefers-reduced-motion: reduce) {
+ .title-icon-wrap { animation: none; }
+}
+
+/* ---------- per-section command header (stacked view only) ---------- */
+.cmd-line {
+ display: block;
+ margin: 25px 0 -10px 0;
+ color: color-mix(in srgb, var(--foreground) 55%, transparent);
+ font-size: 0.82em;
+ letter-spacing: 0.02em;
+}
+.cmd-line::before {
+ content: "$ ";
+ color: var(--foreground);
+ opacity: 0.7;
+ margin-right: 2px;
+}
+body.has-js .cmd-line { display: none; }
+
+/* ---------- interactive prompt (after <main>) ---------- */
+.js-only { display: none; }
+body.has-js .js-only { display: block; }
+.prompt-block {
+ margin: 15px 0;
+ border-top: 0;
+ padding: 0;
+}
+.cmd-form {
+ display: flex;
+ align-items: center;
+ gap: 0.5em;
+ border: 1px solid var(--foreground);
+ padding: 10px 12px;
+ background: transparent;
+ color: var(--foreground);
+}
+.cmd-form:focus-within { border-color: var(--accent); }
+.cmd-form .prompt-mark {
+ color: var(--foreground);
+ user-select: none;
+ font-weight: 500;
+}
+.cmd-form input {
+ flex: 1;
+ border: none;
+ padding: 0;
+ outline: none;
+ background: transparent;
+ color: var(--foreground);
+ font: inherit;
+ appearance: none;
+ caret-color: var(--accent);
+}
+.cmd-form input::placeholder {
+ color: color-mix(in srgb, var(--foreground) 35%, transparent);
+}
+.cmd-output {
+ margin-top: 8px;
+ font-size: 0.92em;
+ color: color-mix(in srgb, var(--foreground) 85%, transparent);
+}
+.cmd-output .line {
+ margin: 0;
+ white-space: pre-wrap;
+ font-family: 'Fira Code', 'Sarasa Mono SC', monospace;
+}
+.cmd-output .line.err {
+ color: color-mix(in srgb, var(--foreground) 30%, var(--accent));
+}
+.cmd-output .line.ok { color: var(--foreground); }
+
+@media (max-width: 720px) {
+ .title-block { padding: 0 12px; }
+ .title-path { font-size: 0.82em; }
+}
 </style>
 </head>
 <body>
 
 <div class="site-title logo" aria-label="网站标识">
- <span class="title-block"><svg class="title-icon" viewBox="0 0 599 600" aria-hidden="true">
+ <span class="title-block"><span class="title-path typed-text" data-typed="true">caishawn@store: ~$</span></span>
+ <span class="title-spacer" aria-hidden="true"></span>
+ <span class="title-stripes" aria-hidden="true"></span>
+ <span class="title-icon-wrap"><span class="title-trail" aria-hidden="true"></span><svg class="title-icon" viewBox="0 0 599 600" aria-hidden="true">
   <g transform="translate(0,600) scale(0.05,-0.05)" fill="currentColor" stroke="none">
    <path d="M5460 9370 c-1041 -163 -1930 -829 -2257 -1691 -17 -46 -39 -55 -216 -87 -979 -180 -1875 -557 -2252 -945 -205 -211 -261 -339 -261 -597 1 -930 1025 -1819 2641 -2291 142 -42 145 -44 145 -108 0 -585 1067 -1029 2560 -1065 1556 -37 2759 401 2833 1032 l12 99 173 53 c1532 473 2438 1210 2593 2111 71 408 -85 697 -539 1004 -427 288 -1343 615 -2011 717 -101 16 -161 34 -161 50 0 13 -45 114 -100 224 -541 1080 -1849 1698 -3160 1494z m856 -291 c1113 -122 2020 -902 2226 -1914 39 -187 -70 -268 -542 -403 -1543 -444 -4713 -200 -4630 355 187 1247 1499 2120 2946 1962z m-3249 -1883 c-48 -187 3 -358 139 -462 830 -633 4179 -701 5323 -108 293 152 378 296 324 549 -33 156 -55 154 397 36 1312 -342 2040 -829 1853 -1241 -233 -511 -1684 -949 -3763 -1134 -399 -36 -2259 -35 -2680 0 -1857 158 -3158 490 -3702 946 -535 447 202 1045 1782 1446 374 95 360 96 327 -32z m-1319 -2155 c2552 -844 7370 -709 9028 254 147 86 118 33 -108 -190 -671 -664 -1682 -1076 -3155 -1286 -2484 -354 -5077 167 -6228 1251 -297 279 -303 301 -50 176 116 -58 347 -150 513 -205z m2071 -1441 c279 -53 732 -113 1051 -139 143 -12 317 -26 386 -32 678 -57 1980 16 2730 154 372 68 379 67 323 -37 -463 -861 -4220 -851 -4705 12 -55 97 -64 95 215 42z"/>
    <path d="M5089 8713 c-524 -195 -991 -626 -1202 -1111 -111 -253 -104 -362 22 -393 98 -25 129 6 232 225 244 522 641 872 1184 1045 130 42 176 162 91 240 -58 54 -171 52 -327 -6z"/>
   </g>
- </svg><span class="title-text">小蔡一碟</span></span>
- <span class="title-stripes" aria-hidden="true"></span>
+ </svg></span>
 </div>
+
+<section class="prompt-block js-only" aria-label="交互提示符">
+ <form class="cmd-form" id="cmd-form" autocomplete="off">
+  <label for="cmd-input" class="visually-hidden">命令输入</label>
+  <span class="prompt-mark" aria-hidden="true">$</span>
+  <input id="cmd-input" type="text" name="cmd" placeholder="type 'help' and press enter" spellcheck="false" autocapitalize="off" />
+ </form>
+ <div id="cmd-output" class="cmd-output" aria-live="polite"></div>
+</section>
 
 <section class="index-content framed" aria-label="入口介绍">
  <h1 class="typed-text" data-typed="true">小蔡一碟</h1>
  <div>咀嚼自我，随心一记<sup class="face">◐_◐</sup></div>
 </section>
 
-<!-- nav is INJECTED by JS; in no-JS mode it simply doesn't exist -->
-
-<pre class="prompt">&gt; whoami
-{ <span class="k">name</span>: Cai Shawn, <span class="k">edu</span>: TJU SE-grad, <span class="k">vibe</span>: engineer }
-&gt; whereami
-{ <span class="k">current</span>: 114°E/30°N, <span class="k">hometown</span>: Hubei_HG }</pre>
-
 <p class="project-link">
  <a href="https://caishawn.github.io/" target="_blank" rel="noopener noreferrer" class="typed-text" data-typed="true">作品集 / Portfolio - caishawn.github.io</a>
 </p>
 
 <main id="main"><section id="plans" data-tab="plans" aria-label="规划">
+ <p class="cmd-line">cat plans.md</p>
  <h2>PLANS</h2>
  <blockquote><p>淫慢则不能励精，险躁则不能治性。</p></blockquote>
  <h3>学习科目</h3>
@@ -426,6 +493,7 @@ footer p { margin: 4px 0; }
  </ul><h3>生活技能</h3><ul><li><p>驾照</p></li><li><p>烹饪</p><ul><li><p>Stage1：番茄炒蛋、青椒炒肉☜(ﾟヮﾟ☜)<sub>目前所在阶段</sub></p></li><li><p>Stage2：下一阶段需要考虑放什么调料叻</p></li></ul></li><li><p>家教</p><ul><li><p>01：初中数学培优</p></li><li><p>02：初中数学补差</p></li></ul></li></ul><h3>目标</h3><ol><li><p>掌握专业知识，通过网络学习和实践，提高理论水平和动手能力。</p></li><li><p>把自己的兴趣点发展成爱好，不需要多么专业，只要能跟随自己的想法即可。</p></li><li><p>好好去度过每一天的生活。希望能成长为一个能被依靠的人物。</p></li></ol>
  </section>
  <section id="habits" data-tab="habits" aria-label="爱好一览">
+ <p class="cmd-line">cat habits.md</p>
  <h2>HABITS</h2>
  <blockquote><p>You are what you eat.</p></blockquote><p>爱好广泛，广而不精。以笔书写，留作纪念。</p><h3>游戏</h3><h4>独游</h4>
  <ul>
@@ -457,6 +525,7 @@ footer p { margin: 4px 0; }
  </ul><p class="aside" title="兴趣即回声，探索即再发现。">// aside</p>
  </section>
  <section id="friends" data-tab="friends" aria-label="友链">
+ <p class="cmd-line">cat friends.md</p>
  <h2>FRIENDS</h2>
  <blockquote><p lang="ja">何処にいても、人と人は繋がっている。</p></blockquote>
  <div class="friend-card">
@@ -473,6 +542,7 @@ footer p { margin: 4px 0; }
 
  </section>
 <section id="about" data-tab="about" aria-label="关于">
+ <p class="cmd-line">cat about.md</p>
  <h2>ABOUT</h2>
  <blockquote><p>成为可供咀嚼之物乃是虚妄。</p></blockquote>
  <figure><img src="assets/img/42f05fd039bcc.webp" alt="Needy Girl Overdose 插画 by X@MikaPikaZo" width="4096" height="2289" loading="lazy" decoding="async" style="height: auto;"><figcaption><span><strong>Needy Girl Overdose</strong></span><strong> </strong><sub>by. X@MikaPikaZo</sub></figcaption></figure><h3 lang="ja">個人紹介</h3><p>毕业于某天津大学、SE本科生。</p><p>居家少年，</p><p>生活在逐渐转变。</p><hr><h3 lang="ja">内容物</h3><p>学习物（经常性放弃）与兴趣物（习惯性沉迷）。</p>
@@ -507,7 +577,6 @@ footer p { margin: 4px 0; }
  var sections = Array.prototype.slice.call(main.querySelectorAll(':scope> section[data-tab]'));
  if (!sections.length) return;
  var framed = document.querySelector('section.index-content.framed');
- var whoami = document.querySelector('pre.prompt');
  var HOME = 'home'; // virtual tab id for the home page
 
  function hashFor(tab) {
@@ -516,50 +585,6 @@ footer p { margin: 4px 0; }
  function tabFromHash(h) {
  var s = (h || '').replace(/^#~?\/?/, '');
  return s === '' ? HOME : s;
- }
-
- // Build nav
- var nav = document.createElement('nav');
- nav.className = 'tab-nav';
- nav.setAttribute('aria-label', 'sections');
-
- // Static "> cd" prompt (visual, not a button) — sits to the left of the links
- var promptEl = document.createElement('span');
- promptEl.className = 'nav-prompt';
- promptEl.textContent = '> cd';
- nav.appendChild(promptEl);
-
- // Home tab first
- var homeLink = document.createElement('a');
- homeLink.href = hashFor(HOME);
- homeLink.textContent = '~';
- homeLink.setAttribute('data-tab', HOME);
- homeLink.addEventListener('click', function (e) {
- e.preventDefault();
- activate(HOME);
- });
- nav.appendChild(homeLink);
-
- sections.forEach(function (s) {
- var a = document.createElement('a');
- var tab = s.dataset.tab;
- a.href = hashFor(tab);
- a.textContent = '~/' + tab;
- a.setAttribute('data-tab', tab);
- a.addEventListener('click', function (e) {
- e.preventDefault();
- activate(tab);
- });
- nav.appendChild(a);
- });
- // insertAfter: nav goes right after .site-title (so it sits above the framed intro)
- var anchor = document.querySelector('.site-title');
- if (anchor && anchor.parentNode) {
-  anchor.parentNode.insertBefore(nav, anchor.nextSibling);
- } else {
-  // fallback
-  var fallback = document.querySelector('section.index-content.framed') || main;
-  fallback.parentNode.insertBefore(nav, fallback.nextSibling);
  }
 
  // Title block also navigates to home
@@ -585,14 +610,6 @@ footer p { margin: 4px 0; }
  });
  // toggle home-only blocks
  document.body.classList.toggle('home', isHome);
- // toggle nav active state
- var links = nav.querySelectorAll('a');
- links.forEach(function (a) {
- var isActive = a.getAttribute('data-tab') === tab;
- a.classList.toggle('active', isActive);
- if (isActive) a.setAttribute('aria-current', 'page');
- else a.removeAttribute('aria-current');
- });
  // hash routing: replace, not push (no history noise)
  try { history.replaceState(null, '', hashFor(tab)); }
  catch (e) { location.hash = hashFor(tab); }
@@ -643,6 +660,114 @@ footer p { margin: 4px 0; }
  // very old browser fallback: fire immediately
  Array.prototype.forEach.call(typedEls, startTyped);
  }
+
+ // ===== Interactive command prompt =====
+ (function promptInit() {
+  var form = document.getElementById('cmd-form');
+  var input = document.getElementById('cmd-input');
+  var out = document.getElementById('cmd-output');
+  if (!form || !input || !out) return;
+
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main > section[data-tab]'));
+  var aboutData = {
+   name: 'Cai Shawn',
+   edu:  'TJU SE-grad',
+   vibe: 'engineer',
+   loc:  '114°E/30°N · Hubei_HG',
+   bio:  '咀嚼自我，随心一记'
+  };
+  var HELP = [
+   'available commands:',
+   '  help              list commands',
+   '  whoami            short bio',
+   '  whereami          location',
+   '  ls                list sections',
+   '  cat intro.txt     blog intro',
+   '  cat contact.txt   contact & social',
+   "  cd <section>      jump to section (plans/habits/friends/about)",
+   '  date              current time',
+   '  echo <text>       repeat text',
+   '  clear             clear output'
+  ];
+
+  function append(node) {
+   out.appendChild(node);
+   node.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+  function line(text, cls) {
+   var p = document.createElement('p');
+   p.className = 'line' + (cls ? ' ' + cls : '');
+   p.textContent = text;
+   return p;
+  }
+
+  function run(raw) {
+   var cmd = raw.trim();
+   if (!cmd) return;
+   append(line('$ ' + cmd));
+   var parts = cmd.split(/\s+/);
+   var head = parts[0].toLowerCase();
+   var rest = parts.slice(1).join(' ');
+
+   switch (head) {
+    case 'help':
+    case '?':
+     HELP.forEach(function (t) { append(line(t)); });
+     break;
+    case 'whoami':
+     append(line('{ name: ' + aboutData.name + ', edu: ' + aboutData.edu + ', vibe: ' + aboutData.vibe + ' }'));
+     break;
+    case 'whereami':
+     append(line('{ current: 114°E/30°N, hometown: Hubei_HG }'));
+     break;
+    case 'ls':
+     append(line('~'));
+     sections.forEach(function (s) { append(line('~/' + s.dataset.tab)); });
+     break;
+    case 'cat':
+     if (/intro/.test(cmd))         append(line(aboutData.bio));
+     else if (/contact/.test(cmd))  append(line('n/a — see ~/friends for now', 'err'));
+     else append(line('cat: try intro.txt or contact.txt', 'err'));
+     break;
+    case 'cd':
+     var target = rest.replace(/[\/~]/g, '');
+     if (target === '' || target === '~') {
+      activate(HOME);
+      append(line('→ ~', 'ok'));
+     } else if (sections.some(function (s) { return s.dataset.tab === target; })) {
+      activate(target);
+      append(line('→ ~/' + target, 'ok'));
+     } else {
+      append(line("cd: no such section: " + target + ". try 'ls'.", 'err'));
+     }
+     break;
+    case 'date':
+     append(line(new Date().toString()));
+     break;
+    case 'echo':
+     append(line(rest || ''));
+     break;
+    case 'clear':
+    case 'cls':
+     out.innerHTML = '';
+     break;
+    default:
+     append(line("command not found: " + head + ". try 'help'.", 'err'));
+   }
+  }
+
+  form.addEventListener('submit', function (e) {
+   e.preventDefault();
+   run(input.value);
+   input.value = '';
+   input.focus();
+  });
+
+  // auto-focus on desktop only (don't steal focus on touch devices)
+  if (matchMedia && matchMedia('(hover: hover)').matches) {
+   window.addEventListener('load', function () { input.focus({ preventScroll: true }); });
+  }
+ })();
 
  document.body.classList.add('has-js');
  });
