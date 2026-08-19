@@ -39,28 +39,6 @@ h4, h5, h6 { font-size: calc(var(--font-size) * 1); }
   display: none !important;
 }
 
-#headline {
-  display: flex;
-  flex: 1;
-  white-space: nowrap;
-  line-height: 1;
-  letter-spacing: 0.04em;
-  font-size: 18px;
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: calc(var(--font-size) * 0.2);
-  text-transform: uppercase;
-}
-
-#headline::after {
-  content: '';
-  background: repeating-linear-gradient(90deg, var(--accent), var(--accent) 2px, transparent 0, transparent 8px);
-  display: block;
-  width: 100%;
-  margin-left: 20px;
-  right: 10px;
-}
-
 .start-question {
   margin-bottom: 20px;
 }
