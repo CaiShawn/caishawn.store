@@ -648,6 +648,56 @@ body.has-js .js-only { display: block; }
  else document.addEventListener('DOMContentLoaded', fn);
  }
 
+ /* ===== 偏好检测（减动效）======
+  * 模块顶部只算一次。供 router（goto/navTo/backTop）和 typewriter 共用。
+  */
+ var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+ /* ===== Typewriter module =====
+  * 独立子模块：负责发现 .typed-text[data-typed="true"] 节点、首次进入视口时启动打字动画。
+  * 与 router / 命令提示符完全解耦，只依赖顶部计算的 reducedMotion 常量。
+  */
+ function startTypewriters() {
+  function startTyped(el) {
+   var text = el.textContent;
+   if (reducedMotion || !text) return;
+   el.textContent = '';
+   var cur = document.createElement('span');
+   cur.className = 'caret caret-typed';
+   cur.setAttribute('aria-hidden', 'true');
+   el.appendChild(cur);
+   var i = 0;
+   function tick() {
+   if (i>= text.length) return; // leave caret blinking
+   cur.before(text[i++]);
+   /* 缓急对比：'-' 长 > '/' 中 > ' ' 小 > 常规 快 */
+   var ch = text[i - 1];
+   var delay;
+   if (ch === '-')        delay = 600;                  // 长停顿：词组之间
+   else if (ch === '/')  delay = 200;                  // 中停顿：路径段间（加快）
+   else if (ch === ' ')  delay = 150;                  // 小停顿：词间空格
+   else                   delay = 75 + Math.random() * 15; // 常规：75-90ms（均值 ~80）
+   setTimeout(tick, delay);
+   }
+   tick();
+  }
+  var typedEls = document.querySelectorAll('.typed-text[data-typed="true"]');
+  if ('IntersectionObserver' in window) {
+   var typedIO = new IntersectionObserver(function (entries) {
+   entries.forEach(function (entry) {
+   if (entry.isIntersecting) {
+   startTyped(entry.target);
+   typedIO.unobserve(entry.target);
+   }
+   });
+   }, { threshold: 0.1 });
+   typedEls.forEach(function (el) { typedIO.observe(el); });
+  } else {
+   // very old browser fallback: fire immediately
+   typedEls.forEach(startTyped);
+  }
+ }
+
  ready(function () {
  var main = document.getElementById('main');
  if (!main) return;
@@ -721,9 +771,6 @@ body.has-js .js-only { display: block; }
  if (ok) goto(t);
  });
 
- // ===== Typewriter effect for [data-typed] (lazy: only when scrolled into view) =====
- var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
  // ===== Footer nav: prev / top / next (4-tab cycle; home is OUTSIDE the loop) =====
  // ORDER 不含 HOME：plans ↔ habits ↔ friends ↔ about 双向循环
  // 首页不显示箭头 → 进入循环只能通过命令或 hash，navTo 只需处理循环部分
@@ -747,44 +794,8 @@ body.has-js .js-only { display: block; }
   });
  });
 
- function startTyped(el) {
- var text = el.textContent;
- if (reducedMotion || !text) return;
- el.textContent = '';
- var cur = document.createElement('span');
- cur.className = 'caret caret-typed';
- cur.setAttribute('aria-hidden', 'true');
- el.appendChild(cur);
- var i = 0;
- function tick() {
- if (i>= text.length) return; // leave caret blinking
- cur.before(text[i++]);
- /* 缓急对比：'-' 长 > '/' 中 > ' ' 小 > 常规 快 */
- var ch = text[i - 1];
- var delay;
- if (ch === '-')        delay = 600;                  // 长停顿：词组之间
- else if (ch === '/')  delay = 200;                  // 中停顿：路径段间（加快）
- else if (ch === ' ')  delay = 150;                  // 小停顿：词间空格
- else                   delay = 75 + Math.random() * 15; // 常规：75-90ms（均值 ~80）
- setTimeout(tick, delay);
- }
- tick();
- }
- var typedEls = document.querySelectorAll('.typed-text[data-typed="true"]');
- if ('IntersectionObserver' in window) {
- var typedIO = new IntersectionObserver(function (entries) {
- entries.forEach(function (entry) {
- if (entry.isIntersecting) {
- startTyped(entry.target);
- typedIO.unobserve(entry.target);
- }
- });
- }, { threshold: 0.1 });
- typedEls.forEach(function (el) { typedIO.observe(el); });
- } else {
- // very old browser fallback: fire immediately
- typedEls.forEach(startTyped);
- }
+ /* 启动 typewriter 子模块（DOM 取自整页，与路由 + 命令提示符解耦） */
+ startTypewriters();
 
  // ===== Interactive command prompt =====
  (function promptInit() {
