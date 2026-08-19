@@ -169,7 +169,7 @@ section.index-content.framed sup.face {
 }
 /* 打字机创建的动态 caret：闪 3 次后停住（保持常亮） */
 .caret-typed {
- animation: blink 1s ease-in-out 3;
+ animation: blink 1.6s ease-in-out 3;
 }
 @media (prefers-reduced-motion: reduce) {
  .caret, .caret-typed { animation: none; }
@@ -625,8 +625,8 @@ body.has-js .prompt-block-bottom { display: none; }
  function tick() {
  if (i>= text.length) return; // leave caret blinking
  cur.before(text[i++]);
- /* 呼吸节奏：基础延迟 + 小幅随机抖动（平缓，不出现快冲），'-' 前更长停顿 */
- var delay = (text[i-1] === '-') ? 700 : 220 + Math.random() * 40;
+ /* 平缓呼吸：每字 100-160ms */
+ var delay = (text[i-1] === '-') ? 600 : 100 + Math.random() * 60;
  setTimeout(tick, delay);
  }
  tick();
