@@ -11,3 +11,6 @@ desktop.ini
 .idea/
 *.swp
 *.swo
+
+# agents
+.agents/
