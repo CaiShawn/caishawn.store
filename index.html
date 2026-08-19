@@ -331,10 +331,16 @@ body.has-js .js-only { display: block; }
  border-top: 0;
  padding: 0;
 }
-/* 底部 prompt-block 作为 <div>：不受 bundle section 规则影响，仅控 margin */
-.prompt-block-bottom {
- margin-top: 8px;
- margin-bottom: 0;
+/* 底部 footer 内的 prompt-block：与 per-section 重复，隐藏 */
+/* 需要更高的特异性，才能赢过 body.has-js .js-only 的 display:block */
+body.has-js .prompt-block-bottom { display: none; }
+/* 每个 tab/section 末尾的 prompt-block（由 JS 注入） */
+.prompt-block-section {
+ margin-top: 36px;
+ margin-bottom: 4px;
+}
+.prompt-block-section .cmd-output {
+ margin-bottom: 8px;
 }
 .cmd-form {
  display: flex;
@@ -638,6 +644,46 @@ body.has-js .js-only { display: block; }
 
  // ===== Interactive command prompt =====
  (function promptInit() {
+  /* 为每个 tab/section 末尾注入 prompt-block（复制 footer 那份的结构） */
+  var sectionSections = Array.prototype.slice.call(document.querySelectorAll('main > section[data-tab]'));
+  sectionSections.forEach(function (section) {
+   var block = document.createElement('div');
+   block.className = 'prompt-block prompt-block-section js-only';
+   block.setAttribute('aria-label', '交互提示符');
+
+   var form = document.createElement('form');
+   form.className = 'cmd-form';
+   form.setAttribute('autocomplete', 'off');
+
+   var label = document.createElement('label');
+   label.className = 'visually-hidden';
+   label.textContent = '命令输入';
+
+   var mark = document.createElement('span');
+   mark.className = 'prompt-mark';
+   mark.setAttribute('aria-hidden', 'true');
+   mark.textContent = '>';
+
+   var input = document.createElement('input');
+   input.type = 'text';
+   input.name = 'cmd';
+   input.placeholder = '?';
+   input.spellcheck = false;
+   input.autocapitalize = 'off';
+
+   form.appendChild(label);
+   form.appendChild(mark);
+   form.appendChild(input);
+
+   var output = document.createElement('div');
+   output.className = 'cmd-output';
+   output.setAttribute('aria-live', 'polite');
+
+   block.appendChild(form);
+   block.appendChild(output);
+   section.appendChild(block);
+  });
+
   /* 每个 .cmd-form 独立 —— 共享同一 .prompt-block 内的 .cmd-output */
   var forms = Array.prototype.slice.call(document.querySelectorAll('.cmd-form'));
   if (!forms.length) return;
