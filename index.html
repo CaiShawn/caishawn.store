@@ -705,7 +705,7 @@ body.has-js .js-only { display: block; }
  function goto(tab) {
  activate(tab);
  var out = document.getElementById('cmd-output');
- if (out) out.innerHTML = '';
+ if (out) out.replaceChildren();
  }
 
  // initial: from hash, else home
@@ -810,7 +810,7 @@ body.has-js .js-only { display: block; }
    'clear             clear output'
   ];
 
-  /* 每个 output 独立一份 runner（lineHTML/append/clear 闭包到自己的 out） */
+  /* 每个 output 独立一份 runner（line/appendText/appendKw/append 闭包到自己的 out） */
   function makeRunner(out) {
    function append(node) {
     out.appendChild(node);
@@ -822,11 +822,15 @@ body.has-js .js-only { display: block; }
     p.textContent = text;
     return p;
    }
-   function lineHTML(html, cls) {
-    var p = document.createElement('p');
-    p.className = 'line' + (cls ? ' ' + cls : '');
-    p.innerHTML = html;
-    return p;
+   /* DOM-API 辅助：所有数据走 textContent / createTextNode，无 innerHTML，避免拼接 HTML 字符串带来的 XSS */
+   function appendText(parent, s) {
+    parent.appendChild(document.createTextNode(s));
+   }
+   function appendKw(parent, label) {
+    var s = document.createElement('span');
+    s.className = 'kw';
+    s.textContent = label;
+    parent.appendChild(s);
    }
 
    function run(raw) {
@@ -842,9 +846,15 @@ body.has-js .js-only { display: block; }
      case '?':
       HELP.forEach(function (t) { append(line(t)); });
       break;
-     case 'whoami':
-      append(lineHTML('<span class="kw">name</span>: ' + aboutData.name + ' <span class="kw">edu</span>: ' + aboutData.edu + ' <span class="kw">loc</span>: ' + aboutData.loc));
+     case 'whoami': {
+      var p = document.createElement('p');
+      p.className = 'line';
+      appendKw(p, 'name'); appendText(p, ': ' + aboutData.name + ' ');
+      appendKw(p, 'edu');  appendText(p, ': ' + aboutData.edu + ' ');
+      appendKw(p, 'loc');  appendText(p, ': ' + aboutData.loc);
+      append(p);
       break;
+     }
      case 'cat':
       if (/motto\.txt/.test(cmd))   append(line(aboutData.bio));
       else                           append(line("cat: try 'motto.txt'", 'err'));
@@ -873,7 +883,7 @@ body.has-js .js-only { display: block; }
      }
      case 'clear':
      case 'cls':
-      out.innerHTML = '';
+      out.replaceChildren();
       break;
      default:
       append(line("command not found: " + head + ". try 'help'.", 'err'));
