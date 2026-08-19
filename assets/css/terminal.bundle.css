@@ -182,7 +182,10 @@ h4:hover .hanchor {
 
 section {
   border-top: 1px dashed color-mix(in srgb, var(--foreground) 20%, transparent);
-  padding: 25px 0;
+  padding-top: 25px;       /* 固有的上padding = 25 */
+  padding-bottom: 25px;
+  padding-left: 0;
+  padding-right: 0;
 
   > :first-child {
     margin-top: 0;

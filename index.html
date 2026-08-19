@@ -192,16 +192,12 @@ h2 {
 /* default (no JS): all sections stacked & fully readable */
 main> section { display: block; padding-top: 24px; }
 /* JS mode: show only the active section (home view hides all — see rule below) */
-body.has-js main> section { display: none; padding-top: 32px; }
+body.has-js main> section { display: none; }
 body.has-js main> section.active { display: block; }
 
-/* ---------- home view: show framed + whoami + project-link, hide all main sections ---------- */
-body.has-js.home section.index-content.framed { display: block; }
-body.has-js.home p.project-link { display: block; }
+/* ---------- home view: hide all main sections; framed + project-link stay visible everywhere ---------- */
 body.has-js.home main > section { display: none !important; }
-/* in any non-home tab: hide framed + whoami + project-link (section.active already controls the section) */
-body.has-js:not(.home) section.index-content.framed { display: none; }
-body.has-js:not(.home) p.project-link { display: none; }
+/* framed + project-link 默认可见，不在 tab 中隐藏 */
 
 /* ---------- friend card ---------- */
 .friend-card {
@@ -307,6 +303,7 @@ footer p { margin: 4px 0; }
  gap: 2px;
  margin: 6px 0 4px;
 }
+body.home .footer-nav { display: none; } /* 首页隐藏导航箭头与“回到顶部” */
 .footer-nav button {
  padding: 2px 8px;
  font: inherit;
@@ -422,7 +419,7 @@ body.has-js .js-only { display: block; }
  /* 故意留空：聚焦无任何背景提示，仅凭 input caret 闪动 */
 }
 .cmd-form .prompt-mark {
- color: color-mix(in srgb, var(--foreground) 50%, transparent);
+ color: var(--foreground);
  user-select: none;
  font-weight: 400;
 }
@@ -432,7 +429,7 @@ body.has-js .js-only { display: block; }
  padding: 0;
  outline: none;
  background: transparent;
- color: color-mix(in srgb, var(--foreground) 85%, transparent);
+ color: var(--foreground);
  font: inherit;
  appearance: none;
  caret-color: var(--accent);
@@ -450,7 +447,7 @@ body.has-js .js-only { display: block; }
  font-size: 0.92em;
  color: color-mix(in srgb, var(--foreground) 70%, transparent);
  font-family: 'Fira Code', 'Sarasa Mono SC', monospace;
- max-height: 7.5em; /* 4 行 + padding */
+ max-height: 8.9em; /* 5 行 + padding */
  overflow-y: auto;
 }
 .cmd-output:empty { display: none; }
@@ -460,6 +457,13 @@ body.has-js .js-only { display: block; }
  margin: 0;
  min-height: 1.4em;
  white-space: pre-wrap;
+ color: color-mix(in srgb, var(--foreground) 70%, transparent);
+ padding-left: 2ch;
+ box-sizing: border-box;
+}
+.cmd-output .line.echo {
+ color: var(--foreground);
+ padding-left: 0;
 }
 .cmd-output .line.err {
  color: color-mix(in srgb, var(--foreground) 60%, var(--accent));
@@ -482,6 +486,13 @@ body.has-js .js-only { display: block; }
  <span class="title-block"><span class="title-path-prefix">caishawn@</span><span class="title-path" id="title-path">~</span></span>
 </div>
 
+<section class="index-content framed" aria-label="入口介绍">
+ <h1 class="typed-text" data-typed="true">小蔡一碟</h1>
+ <p class="project-link">
+  <a href="https://caishawn.github.io/" target="_blank" rel="noopener noreferrer" class="typed-text" data-typed="true">作品集 / Portfolio - Github Pages<span class="caret" aria-hidden="true"></span></a>
+ </p>
+</section>
+
 <section class="prompt-block js-only" aria-label="交互提示符">
  <form class="cmd-form" id="cmd-form" autocomplete="off">
   <label for="cmd-input" class="visually-hidden">命令输入</label>
@@ -489,13 +500,6 @@ body.has-js .js-only { display: block; }
   <input id="cmd-input" type="text" name="cmd" placeholder="?" spellcheck="false" autocapitalize="off" />
  </form>
  <div id="cmd-output" class="cmd-output" aria-live="polite"></div>
-</section>
-
-<section class="index-content framed" aria-label="入口介绍">
- <h1 class="typed-text" data-typed="true">小蔡一碟</h1>
- <p class="project-link">
-  <a href="https://caishawn.github.io/" target="_blank" rel="noopener noreferrer" class="typed-text" data-typed="true">作品集 / Portfolio - Github Pages<span class="caret" aria-hidden="true"></span></a>
- </p>
 </section>
 
 <main id="main"><section id="plans" data-tab="plans" aria-label="规划">
@@ -514,7 +518,7 @@ body.has-js .js-only { display: block; }
   </li>
   <li>
    <h4>工程实践</h4>
-   <p>语言基础 / 框架原理与使用 / 底层系统实现 / 业务系统实现 / 数据库操作</p>
+   <p>语言基础 / 框架原理与使用 / 底层 &amp; 业务系统实现</p>
   </li>
  </ul>
  <h3>课外兴趣</h3>
@@ -647,7 +651,7 @@ body.has-js .js-only { display: block; }
  ready(function () {
  var main = document.getElementById('main');
  if (!main) return;
- var sections = Array.prototype.slice.call(main.querySelectorAll(':scope> section[data-tab]'));
+ var sections = [...main.querySelectorAll(':scope> section[data-tab]')];
  if (!sections.length) return;
  var framed = document.querySelector('section.index-content.framed');
  var HOME = 'home'; // virtual tab id for the home page
@@ -669,7 +673,7 @@ body.has-js .js-only { display: block; }
   function goHome(e) {
   if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
   e.preventDefault();
-  activate(HOME);
+  goto(HOME);
   }
   titleBlock.addEventListener('click', goHome);
   titleBlock.addEventListener('keydown', goHome);
@@ -697,29 +701,37 @@ body.has-js .js-only { display: block; }
  try { history.replaceState(null, '', hashFor(tab)); }
  catch (e) { location.hash = hashFor(tab); }
  }
+ /* goto = activate 路由 + 跳页副作用（清空 cmd-output） */
+ function goto(tab) {
+ activate(tab);
+ var out = document.getElementById('cmd-output');
+ if (out) out.innerHTML = '';
+ }
 
  // initial: from hash, else home
  var initial = tabFromHash(location.hash);
  var exists = (initial === HOME) || sections.some(function (s) { return s.dataset.tab === initial; });
- activate(exists ? initial : HOME);
+ goto(exists ? initial : HOME);
 
  // respond to back/forward
  window.addEventListener('hashchange', function () {
  var t = tabFromHash(location.hash);
  var ok = (t === HOME) || sections.some(function (s) { return s.dataset.tab === t; });
- if (ok) activate(t);
+ if (ok) goto(t);
  });
 
  // ===== Typewriter effect for [data-typed] (lazy: only when scrolled into view) =====
  var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
- // ===== Footer nav: prev / top / next (cycle ~ → plans → habits → friends → about) =====
- var ORDER = [HOME].concat(sections.map(function (s) { return s.dataset.tab; }));
+ // ===== Footer nav: prev / top / next (4-tab cycle; home is OUTSIDE the loop) =====
+ // ORDER 不含 HOME：plans ↔ habits ↔ friends ↔ about 双向循环
+ // 首页不显示箭头 → 进入循环只能通过命令或 hash，navTo 只需处理循环部分
+ var ORDER = sections.map(function (s) { return s.dataset.tab; });
  function navTo(dir) {
   var i = ORDER.indexOf(currentTab);
-  if (i < 0) i = 0;
+  // 箭头在首页隐藏：调用 navTo 时 currentTab 必然在 ORDER 中
   var target = ORDER[(i + dir + ORDER.length) % ORDER.length];
-  activate(target);
+  goto(target);
   window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
  }
  var backTop = document.querySelector('.back-to-top');
@@ -729,7 +741,7 @@ body.has-js .js-only { display: block; }
   });
  }
  var navBtns = document.querySelectorAll('.nav-btn');
- Array.prototype.forEach.call(navBtns, function (btn) {
+ navBtns.forEach(function (btn) {
   btn.addEventListener('click', function () {
    navTo(parseInt(btn.getAttribute('data-nav'), 10) || 0);
   });
@@ -747,8 +759,13 @@ body.has-js .js-only { display: block; }
  function tick() {
  if (i>= text.length) return; // leave caret blinking
  cur.before(text[i++]);
- /* 平缓呼吸：每字 100-160ms */
- var delay = (text[i-1] === '-') ? 600 : 100 + Math.random() * 60;
+ /* 缓急对比：'-' 长 > '/' 中 > ' ' 小 > 常规 快 */
+ var ch = text[i - 1];
+ var delay;
+ if (ch === '-')        delay = 600;                  // 长停顿：词组之间
+ else if (ch === '/')  delay = 200;                  // 中停顿：路径段间（加快）
+ else if (ch === ' ')  delay = 150;                  // 小停顿：词间空格
+ else                   delay = 75 + Math.random() * 15; // 常规：75-90ms（均值 ~80）
  setTimeout(tick, delay);
  }
  tick();
@@ -763,10 +780,10 @@ body.has-js .js-only { display: block; }
  }
  });
  }, { threshold: 0.1 });
- Array.prototype.forEach.call(typedEls, function (el) { typedIO.observe(el); });
+ typedEls.forEach(function (el) { typedIO.observe(el); });
  } else {
  // very old browser fallback: fire immediately
- Array.prototype.forEach.call(typedEls, startTyped);
+ typedEls.forEach(startTyped);
  }
 
  // ===== Interactive command prompt =====
@@ -778,7 +795,7 @@ body.has-js .js-only { display: block; }
   var out = document.getElementById('cmd-output');
   if (!input || !out) return;
 
-  var sections = Array.prototype.slice.call(document.querySelectorAll('main > section[data-tab]'));
+  var sections = [...document.querySelectorAll('main > section[data-tab]')];
   var aboutData = {
    name: 'Cai Shawn',
    edu:  'TJU SE-grad',
@@ -787,10 +804,10 @@ body.has-js .js-only { display: block; }
    bio:  '咀嚼自我，随心一记'
   };
   var HELP = [
-   'common commands:',
-   '  whoami            short bio',
-   '  cd <section>      [plans|habits|friends|about]',
-   '  clear             clear output'
+   'whoami            short bio',
+   'ls                list sections',
+   'cd <section>      open a section',
+   'clear             clear output'
   ];
 
   /* 每个 output 独立一份 runner（lineHTML/append/clear 闭包到自己的 out） */
@@ -815,7 +832,7 @@ body.has-js .js-only { display: block; }
    function run(raw) {
     var cmd = raw.trim();
     if (!cmd) return;
-    append(line('> ' + cmd));
+    append(line('> ' + cmd, 'echo'));
     var parts = cmd.split(/\s+/);
     var head = parts[0].toLowerCase();
     var rest = parts.slice(1).join(' ');
@@ -826,7 +843,7 @@ body.has-js .js-only { display: block; }
       HELP.forEach(function (t) { append(line(t)); });
       break;
      case 'whoami':
-      append(lineHTML('<span class="kw">name</span>: ' + aboutData.name + ' <span class="kw">vibe</span>: ' + aboutData.vibe + ' <span class="kw">edu</span>: ' + aboutData.edu + ' <span class="kw">loc</span>: ' + aboutData.loc));
+      append(lineHTML('<span class="kw">name</span>: ' + aboutData.name + ' <span class="kw">edu</span>: ' + aboutData.edu + ' <span class="kw">loc</span>: ' + aboutData.loc));
       break;
      case 'cat':
       if (/motto\.txt/.test(cmd))   append(line(aboutData.bio));
@@ -839,23 +856,21 @@ body.has-js .js-only { display: block; }
      case 'pwd':
       append(line(currentTab === HOME ? '~' : '~/' + currentTab));
       break;
-     case 'cd':
+     case 'cd': {
       var target = rest.replace(/[\/~]/g, '');
-      var switched = false;
-      if (target === '' || target === '~') {
-       activate(HOME);
-       append(line('→ ~', 'ok'));
-       switched = true;
-      } else if (sections.some(function (s) { return s.dataset.tab === target; })) {
-       activate(target);
-       append(line('→ ~/' + target, 'ok'));
-       switched = true;
-      } else {
+      /* 解析目标；resolved === undefined 表示不合法 */
+      var resolved;
+      if (target === '' || target === '~')                          resolved = HOME;
+      else if (sections.some(function (s) { return s.dataset.tab === target; })) resolved = target;
+      if (!resolved) {
        append(line("cd: no such section: " + target + ". try 'ls'.", 'err'));
+       break;
       }
-      /* cd 成功后跳转到新页面顶部 */
-      if (switched) window.scrollTo({ top: 0, behavior: 'smooth' });
+      goto(resolved);
+      append(line(resolved === HOME ? '→ ~' : '→ ~/' + resolved, 'ok'));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       break;
+     }
      case 'clear':
      case 'cls':
       out.innerHTML = '';
