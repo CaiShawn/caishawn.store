@@ -487,7 +487,7 @@ body:not(.app) .footer-nav { display: none; }
 <section class="index-content framed" aria-label="入口介绍">
  <h1 class="typed-text" data-typed="true">小蔡一碟</h1>
  <p class="project-link">
-  <a href="https://caishawn.github.io/" target="_blank" rel="noopener noreferrer" class="typed-text" data-typed="true">作品集 / Portfolio - Github Pages<span class="caret" aria-hidden="true"></span></a>
+  <a href="https://caishawn.github.io/" target="_blank" rel="noopener noreferrer" class="typed-text" data-typed="true">Github Pages - 作品集<span class="caret" aria-hidden="true"></span></a>
  </p>
 </section>
 
@@ -874,11 +874,7 @@ body:not(.app) .footer-nav { display: none; }
      if (target === '' || target === '~')                          resolved = HOME;
      else if (sections.some(function (s) { return s.dataset.tab === target; })) resolved = target;
      if (!resolved) return { lines: [line("cd: no such section: " + target + ". try 'ls'.", 'err')] };
-     return {
-      lines: [line(resolved === HOME ? '→ ~' : '→ ~/' + resolved, 'ok')],
-      goto:  resolved,
-      scroll: true,
-     };
+     return { goto: resolved, scroll: true };
     },
     clear: function () { return { clear: true }; },
    };
