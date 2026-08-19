@@ -189,15 +189,17 @@ h2 {
 }
 
 /* ---------- progressive section routing ---------- */
-/* default (no JS): all sections stacked & fully readable */
-main> section { display: block; padding-top: 24px; }
-/* JS mode: show only the active section (home view hides all — see rule below) */
-body.has-js main> section { display: none; }
-body.has-js main> section.active { display: block; }
-
-/* ---------- home view: hide all main sections; framed + project-link stay visible everywhere ---------- */
-body.has-js.home main > section { display: none !important; }
-/* framed + project-link 默认可见，不在 tab 中隐藏 */
+/* root state markers (set by JS at boot):
+ *   body.app          - JS activated, route by tab
+ *   body[data-tab]    - current tab id (home / plans / habits / friends / about)
+ * default (no JS / app absent): all sections stacked & fully readable
+ */
+main > section { display: block; padding-top: 24px; }
+/* app mode: hide non-active, show active */
+.app main > section { display: none; }
+.app main > section.active { display: block; }
+/* home in app mode: hide every section (incl. .active), higher specificity so no !important needed */
+.app[data-tab="home"] main > section { display: none; }
 
 /* ---------- friend card ---------- */
 .friend-card {
@@ -303,7 +305,7 @@ footer p { margin: 4px 0; }
  gap: 2px;
  margin: 6px 0 4px;
 }
-body.home .footer-nav { display: none; } /* 首页隐藏导航箭头与“回到顶部” */
+.app[data-tab="home"] .footer-nav { display: none; } /* 首页隐藏导航箭头与“回到顶部” */
 .footer-nav button {
  padding: 2px 8px;
  font: inherit;
@@ -394,11 +396,11 @@ body.home .footer-nav { display: none; } /* 首页隐藏导航箭头与“回到
  opacity: 0.7;
  margin-right: 2px;
 }
-body.has-js .cmd-line { display: none; }
+.app .cmd-line { display: none; }
 
 /* ---------- interactive prompt (after <main>) ---------- */
 .js-only { display: none; }
-body.has-js .js-only { display: block; }
+.app .js-only { display: block; }
 /* 顶部 prompt-block 作为 <section>：覆盖 bundle 的 border-top + padding 默认值 */
 .prompt-block {
  margin: 15px 0;
@@ -743,8 +745,8 @@ body.has-js .js-only { display: block; }
  sections.forEach(function (s) {
  s.classList.toggle('active', s.dataset.tab === tab);
  });
- // toggle home-only blocks
- document.body.classList.toggle('home', isHome);
+ /* 当前路由状态挂到 body[data-tab]：CSS 用属性选择器响应（取代 .has-js + .home 双开关） */
+ document.body.dataset.tab = (tab === HOME ? 'home' : tab);
  // sync title-path with current location
  setPath(tab);
  // hash routing: replace, not push (no history noise)
@@ -928,7 +930,7 @@ body.has-js .js-only { display: block; }
   }
  })();
 
- document.body.classList.add('has-js');
+ document.body.classList.add('app');
  });
 })();
 </script>
