@@ -174,52 +174,6 @@
     margin-left: 0.4em;
   }
 
-  /* ---------- footer-nav (与主页一致) ---------- */
-  .footer-nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    margin: 6px 0 4px;
-  }
-  .footer-nav button,
-  .footer-nav a {
-    padding: 2px 8px;
-    font: inherit;
-    font-size: 0.78em;
-    color: color-mix(in srgb, var(--foreground) 55%, transparent);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    transition: color .15s ease;
-  }
-  .footer-nav button:hover,
-  .footer-nav button:focus-visible,
-  .footer-nav a:hover,
-  .footer-nav a:focus-visible {
-    color: var(--accent);
-    outline: none;
-  }
-  .footer-nav button:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-  .nav-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.8em;
-    padding: 2px 0;
-    font-size: 1em !important;
-    line-height: 1;
-  }
-  .home-link {
-    display: inline-block;
-    padding: 2px 8px;
-  }
-
   /* ---------- footer (与主页一致) ---------- */
   footer {
     margin-top: 2.4em;
@@ -312,10 +266,6 @@
     <span class="meta-dot" aria-hidden="true">·</span>
     <span class="meta-side right">vanilla HTML</span>
   </p>
-  <div class="footer-nav" role="group" aria-label="页面操作">
-    <button class="nav-btn" id="go-back" type="button" aria-label="返回上一页">←</button>
-    <a href="/" class="home-link" aria-label="回到首页">回到首页</a>
-  </div>
 </footer>
 
 <div class="beian">
@@ -335,19 +285,7 @@
     if (box) box.textContent = window.location.pathname + window.location.search;
   })();
 
-  // 2. Go Back 按钮：若无历史可回，禁用
-  (function () {
-    var btn = document.getElementById('go-back');
-    if (!btn) return;
-    if (window.history.length <= 1) {
-      btn.disabled = true;
-      btn.title = '没有上一页可返回';
-    } else {
-      btn.addEventListener('click', function () { window.history.back(); });
-    }
-  })();
-
-  // 3. typed-text 动画：从主页移植，遵循 prefers-reduced-motion
+  // 2. typed-text 动画：从主页移植，遵循 prefers-reduced-motion
   (function () {
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var el = document.querySelector('.typed-text[data-typed="true"]');
