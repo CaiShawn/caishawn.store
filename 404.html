@@ -44,8 +44,8 @@
     flex-direction: column;
   }
 
-  /* ---------- header: site-title (与主页一致) ---------- */
-  .site-title {
+  /* ---------- header: titlebar (与主页一致) ---------- */
+  .titlebar {
     display: flex;
     align-items: stretch;
     justify-content: center;
@@ -216,7 +216,7 @@
   /* ---------- responsive ---------- */
   @media (max-width: 720px) {
     body { padding: 20px 18px 50px 18px; }
-    .site-title { height: 44px; margin-bottom: 24px; }
+    .titlebar { height: 44px; margin-bottom: 24px; }
     .title-block { font-size: 16px; padding: 0 16px; }
     section.index-content.framed { padding: 24px 22px; }
   }
@@ -225,10 +225,10 @@
 </head>
 <body>
 
-<!-- header: site-title 样式与主页一致，路径 ~/404，点击回首页 -->
-<header class="site-title logo">
+<!-- header: titlebar 样式与主页一致，路径 ~/404，点击回首页 -->
+<header class="titlebar">
   <a href="/" class="title-block" aria-label="返回首页">
-    <span class="title-path-prefix">caishawn@</span><span class="title-path">~/404</span>
+    <span class="title-path-prefix">caishawn@store:</span><span class="title-path">~/404</span>
   </a>
 </header>
 
@@ -237,15 +237,15 @@
     <h1 class="typed-text" data-typed="true">404 — path not found</h1>
     <p class="aside">// The blog is offline,<br>// but the home is still on.</p>
     <p class="cta-link">
-      <a href="/" class="typed-text" data-typed="true">↩ Home<span class="caret" aria-hidden="true"></span></a>
+      <a href="/" class="typed-text" data-typed="true">Return Home ↩<span class="caret" aria-hidden="true"></span></a>
     </p>
   </section>
 
-  <h3 class="path-label">你访问的路径：</h3>
+  <h2 class="path-label">PATH</h2>
   <code id="path-display">/</code>
   <p class="muted">请求的路径不存在或已被归档。</p>
   <p class="aside">// Halo <span title="原因：服务器被拿去养🦞了 :P">已光荣退休</span></p>
-  <h3>你可能的去处：</h3>
+  <h2>ELSE</h2>
   <ul class="links">
     <li><a href="/">/</a><span class="label">个人主页（学习规划、爱好一览、友链）</span></li>
     <li><a href="https://caishawn.github.io/" target="_blank" rel="noopener noreferrer">caishawn.github.io</a><span class="label">作品集 / Portfolio</span></li>

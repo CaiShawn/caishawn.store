@@ -79,7 +79,7 @@ p, ul, ol,
 img, figure, video,
 table { margin: 25px 0; }
 
-a { color: var(--accent); }
+a { color: var(--accent); text-decoration: none; }
 
 /* === buttons (generic terminal accent border; inline overrides per site) === */
 button {
@@ -158,16 +158,12 @@ ul ul, ul ol, ol ul, ol ol { margin-top: 0; }
 li::marker { color: var(--accent); }
 ul li, ol li { position: relative; }
 
-/* === inline notations: <sup class="face"> (1) + <sub> (2) + <abbr> (5) === */
+/* === inline notations: <sup class="face"> (1) + <sub> (2) ===
+ * <abbr> 全部下划线移除：indent only via .subjects abbr (PLANS section)
+ */
 sup { line-height: 0; }
 sub { bottom: -0.25em; }
 sup { top: -0.25em; }
-abbr {
- position: relative;
- text-decoration-style: wavy;
- text-decoration-color: var(--accent);
- cursor: help;
-}
 
 /* === blockquote ===
  *  4 blockquotes across sections (plans, habits, friends, about).

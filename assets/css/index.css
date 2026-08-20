@@ -5,7 +5,7 @@
  * the global theme; this file owns everything unique to home:      *
  *   · 55% body width + centering                                   *
  *   · framed section styles                                        *
- *   · site-title (logo path)                                       *
+ *   · titlebar (logo path)                                          *
  *   · friend cards, subjects, h2 rhythm                            *
  *   · footer, project link, meta, beian, footer-nav                *
  *   · interactive prompt (cmd-form / cmd-output)                   *
@@ -56,8 +56,8 @@ section.index-content.framed sup.face {
 
 /* .subtitle merged into .aside (now shared via terminal.css) */
 
-/* ---------- site title ---------- */
-.site-title {
+/* ---------- titlebar ---------- */
+.titlebar {
  display: flex;
  align-items: stretch;
  justify-content: center; /* title-block 在 body 内水平居中 */
@@ -91,7 +91,7 @@ section.index-content.framed sup.face {
 /* .title-text: element removed */
 
 @media (max-width: 720px) {
- .site-title { height: 44px; margin-bottom: 18px; }
+ .titlebar { height: 44px; margin-bottom: 18px; }
  .title-block { font-size: 16px; padding: 0 16px; gap: 4px; }
 }
 
@@ -259,7 +259,7 @@ body:not(.app) .footer-nav { display: none; }
  vertical-align: -2px;
 }
 
-/* ---------- site-title: dynamic path ---------- */
+/* ---------- titlebar: dynamic path ---------- */
 .title-path-prefix {
  font-weight: 500;
  font-size: 0.95em;
