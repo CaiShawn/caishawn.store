@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>404 — 路径不存在 · 小蔡一碟</title>
 
-<!-- canonical & SEO -->
+<!-- SEO: 404 页面不参与索引，但保留链接以传递权重 -->
 <link rel="canonical" href="https://www.caishawn.store/">
 <meta name="robots" content="noindex,follow">
 <meta name="description" content="请求的路径不存在或已被归档。caishawn 个人主页 · 学习规划、爱好一览、友链与随笔。">
@@ -29,118 +29,329 @@
 <link rel="stylesheet" href="assets/css/terminal.bundle.css">
 
 <style>
+  /* ---------- base ---------- */
   body {
     background: var(--background);
     color: var(--foreground);
     font-family: "Fira Code", "JetBrains Mono", Monaco, Consolas, "Sarasa Mono SC", monospace;
-    padding: 60px 24px;
+    line-height: var(--line-height);
+    padding: 32px 24px 60px;
     max-width: 720px;
     margin: 0 auto;
-    line-height: var(--line-height);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
   }
+
+  /* ---------- header: site-title (与主页一致) ---------- */
+  .site-title {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    height: 44px;
+    margin: 0 0 32px 0;
+    font-size: 0;
+    line-height: 1;
+  }
+  .title-block {
+    color: var(--foreground);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 0 15px;
+    line-height: 32px;
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+  }
+  .title-block:focus-visible {
+    outline: 2px solid var(--foreground);
+    outline-offset: 2px;
+  }
+  .title-block .title-path {
+    color: var(--accent);
+  }
+
+  /* ---------- main ---------- */
+  main { flex: 1 0 auto; }
+
   h1 {
     color: var(--accent);
     font-size: 2.2em;
-    margin-bottom: 0.4em;
+    margin: 0 0 0.5em 0;
     letter-spacing: 0.04em;
   }
+
   .prompt {
     color: var(--accent);
     margin-right: 0.6em;
   }
-  .typed-target {
-    display: inline-block;
-    min-height: 1.5em;
-  }
+
+  /* ---------- typed-text caret ---------- */
   .caret {
     display: inline-block;
-    width: 0.6em;
+    width: 0.55em;
     height: 1em;
     background: var(--accent);
     margin-left: 2px;
     vertical-align: -0.15em;
     animation: blink 1s ease-in-out infinite;
   }
+  .caret-typed {
+    animation: blink 2s ease-in-out infinite;
+  }
   @keyframes blink { 50% { opacity: 0; } }
   @media (prefers-reduced-motion: reduce) {
-    .caret { animation: none; }
+    .caret, .caret-typed { animation: none; }
   }
+
+  /* ---------- path box ---------- */
+  .path-box {
+    background: rgba(94, 165, 238, 0.08);
+    border-left: 3px solid var(--accent);
+    padding: 10px 14px;
+    margin: 0.4em 0 1.2em;
+    word-break: break-all;
+    color: var(--accent);
+    font-size: 0.95em;
+  }
+
+  /* ---------- ASCII art ---------- */
   .ascii {
     color: var(--accent);
-    opacity: 0.7;
-    margin: 1.5em 0;
-    line-height: 1.2;
+    opacity: 0.65;
+    margin: 1.6em 0;
+    line-height: 1.25;
     font-size: 0.92em;
     white-space: pre;
     overflow-x: auto;
   }
+
+  /* ---------- links list ---------- */
   ul.links {
     list-style: none;
     padding: 0;
-    margin: 1.6em 0;
+    margin: 1em 0 1.4em 0;
   }
-  ul.links li { margin: 0.4em 0; }
-  ul.links a {
+  ul.links li {
+    margin: 0.5em 0;
+    padding-left: 1.2em;
+    position: relative;
+  }
+  ul.links li::before {
+    content: "→";
     color: var(--accent);
+    position: absolute;
+    left: 0;
+  }
+  ul.links a {
+    color: var(--foreground);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
+  ul.links a:hover {
+    color: var(--accent);
+  }
+  ul.links .label {
+    color: color-mix(in srgb, var(--foreground) 70%, transparent);
+    margin-left: 0.4em;
+  }
+
+  /* ---------- action buttons ---------- */
+  .actions {
+    display: flex;
+    gap: 12px;
+    margin: 1.6em 0 0.4em;
+    flex-wrap: wrap;
+  }
+  .actions button,
+  .actions a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: var(--accent);
+    color: var(--background);
+    font-family: inherit;
+    font-size: 0.95em;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border: 0;
+    cursor: pointer;
+  }
+  .actions button:hover:not(:disabled),
+  .actions a:hover {
+    outline: 1px solid var(--accent);
+    outline-offset: 2px;
+    background: color-mix(in srgb, var(--accent) 85%, var(--foreground));
+  }
+  .actions .ghost {
+    background: transparent;
+    color: var(--accent);
+    outline: 1px solid var(--accent);
+    outline-offset: -1px;
+  }
+  .actions .ghost:hover {
+    background: var(--accent);
+    color: var(--background);
+  }
+  .actions button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* ---------- footer (与主页一致) ---------- */
   footer {
     margin-top: 2.4em;
-    padding-top: 1.2em;
+    padding-top: 0;
     border-top: 1px dashed var(--accent);
-    font-size: 0.85em;
-    opacity: 0.8;
+  }
+  .meta {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1em;
+    font-size: 0.78em;
+    color: color-mix(in srgb, var(--foreground) 80%, transparent);
+    margin: 5px 0;
+  }
+  .meta-side { color: inherit; }
+  .meta-side.left { text-align: right; }
+  .meta-side.right { text-align: left; }
+  .meta-dot { color: var(--accent); }
+
+  .beian {
+    margin-top: 8px;
+    padding-top: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 0.72em;
+    color: color-mix(in srgb, var(--foreground) 80%, transparent);
+  }
+  .beian a {
+    color: inherit;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+  }
+  .beian a:hover { color: var(--accent); }
+  .gongan-icon {
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 720px) {
+    body { padding: 20px 18px 50px 18px; }
+    .site-title { height: 44px; margin-bottom: 24px; }
+    .title-block { font-size: 16px; padding: 0 16px; }
+    h1 { font-size: 1.8em; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <span class="prompt">caishawn@~</span><span class="caret" aria-hidden="true"></span>
-</header>
+<!-- header: site-title 样式与主页一致，路径 ~/404，点击回首页 -->
+<a href="/" class="site-title logo" aria-label="返回首页">
+  <span class="title-block">
+    <span class="title-path-prefix">caishawn@</span><span class="title-path">~/404</span>
+  </span>
+</a>
 
-<main>
-  <h1>404 — path not found</h1>
+<main id="main">
+  <h1 class="typed-text" data-typed="true">404 — path not found</h1>
 
-  <p><span class="prompt">&gt;</span><span class="typed-target" id="typed-tip">请求的路径不存在或已被归档。Halo 博客服务已于 2026 年停服，旧文章的快照会随时间淡出索引。</span><span class="caret" aria-hidden="true"></span></p>
+  <p>你访问的路径：</p>
+  <div class="path-box" id="path-box">/</div>
+
+  <p>请求的路径不存在或已被归档。<br>
+  Halo 博客服务已于 2026 年停服，旧文章的快照会随时间淡出 Google 索引。</p>
 
   <pre class="ascii" aria-hidden="true">
-   ╭─────────────────────────────╮
-   │  The blog is offline,       │
-   │  but the home is still on.  │
-   ╰─────────────────────────────╯
+   ╭───────────────────────────────╮
+   │  The blog is offline,         │
+   │  but the home is still on.    │
+   ╰───────────────────────────────╯
   </pre>
 
   <p>你可能的去处：</p>
   <ul class="links">
-    <li><a href="/">/</a> — 个人主页（当前页）</li>
-    <li><a href="https://caishawn.github.io/" target="_blank" rel="noopener noreferrer">https://caishawn.github.io/</a> — 作品集 / Portfolio</li>
-    <li><a href="https://github.com/CaiShawn" target="_blank" rel="noopener noreferrer">https://github.com/CaiShawn</a> — GitHub</li>
+    <li><a href="/">/</a><span class="label">个人主页（学习规划、爱好一览、友链）</span></li>
+    <li><a href="https://caishawn.github.io/" target="_blank" rel="noopener noreferrer">caishawn.github.io</a><span class="label">作品集 / Portfolio</span></li>
+    <li><a href="https://github.com/CaiShawn" target="_blank" rel="noopener noreferrer">github.com/CaiShawn</a><span class="label">GitHub</span></li>
   </ul>
+
+  <div class="actions">
+    <button type="button" id="go-back" aria-label="返回上一页">← Go Back</button>
+    <a href="/" class="ghost" aria-label="回到首页">Home</a>
+  </div>
 </main>
 
 <footer>
-  <p>since Mar 2026 · vanilla HTML · <a href="/" style="color: var(--accent);">回到首页</a></p>
+  <p class="meta">
+    <span class="meta-side left">since Mar 2026</span>
+    <span class="meta-dot" aria-hidden="true">·</span>
+    <span class="meta-side right">vanilla HTML</span>
+  </p>
+  <div class="beian">
+    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">鄂ICP备2026015802号</a>
+    <a href="https://www.beian.gov.cn/" target="_blank" rel="noopener noreferrer">
+      <svg class="gongan-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+        <path d="M8 1 2 2.5V8c0 3 2.5 5.5 6 7 3.5-1.5 6-4 6-7V2.5L8 1zm0 1.4 5 1.2V8c0 2.4-2 4.5-5 5.7C5 12.5 3 10.4 3 8V3.6l5-1.2z"/>
+        <path d="M6.5 8 7.5 9 10 6.5l1 1L7.5 11l-2-2z"/>
+      </svg>鄂公网安备42110002000331号
+    </a>
+  </div>
 </footer>
 
 <script>
-  // 轻量打字机效果（仅对 .typed-target 生效；遵循 prefers-reduced-motion）
+  // 1. 展示当前访问路径
+  (function () {
+    var box = document.getElementById('path-box');
+    if (box) box.textContent = window.location.pathname + window.location.search;
+  })();
+
+  // 2. Go Back 按钮：若无历史可回，禁用
+  (function () {
+    var btn = document.getElementById('go-back');
+    if (!btn) return;
+    if (window.history.length <= 1) {
+      btn.disabled = true;
+      btn.title = '没有上一页可返回';
+    } else {
+      btn.addEventListener('click', function () { window.history.back(); });
+    }
+  })();
+
+  // 3. typed-text 动画：从主页移植，遵循 prefers-reduced-motion
   (function () {
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var el = document.getElementById('typed-tip');
+    var el = document.querySelector('.typed-text[data-typed="true"]');
     if (!el || reduced) return;
     var text = el.textContent;
     el.textContent = '';
+    var cur = document.createElement('span');
+    cur.className = 'caret caret-typed';
+    cur.setAttribute('aria-hidden', 'true');
+    el.appendChild(cur);
     var i = 0;
     function tick() {
       if (i >= text.length) return;
-      el.textContent += text[i++];
-      var delay = text[i - 1] === ' ' ? 120 : 60 + Math.random() * 30;
+      cur.before(text[i++]);
+      var ch = text[i - 1];
+      var delay;
+      if (ch === '-')        delay = 600;
+      else if (ch === '/')   delay = 200;
+      else if (ch === ' ')   delay = 150;
+      else                   delay = 75 + Math.random() * 15;
       setTimeout(tick, delay);
     }
     tick();
