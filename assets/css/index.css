@@ -94,6 +94,10 @@ main > section { display: block; padding-top: 24px; }
  text-underline-offset: 3px;
  cursor: help;
 }
+.subjects strong {
+ color: var(--accent);
+ font-weight: 600;
+}
 
 /* ---------- footer / project link ---------- */
 /* footer base (padding-top + border-top) now in terminal.css; home overrides margin-top here */
