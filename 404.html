@@ -194,6 +194,20 @@
     font-family: 'Fira Code', 'Sarasa Mono SC', monospace;
   }
 
+  /* visited path: inline label above, full-width code block below */
+  .path-label {
+    margin: 0 0 4px 0;
+  }
+  #path-display {
+    display: block;
+    margin: 0 0 16px 0;
+    padding: 8px 14px;
+    border-left: 3px solid var(--accent);
+    background: rgba(94, 165, 238, 0.12);
+    color: var(--accent);
+    word-break: break-all;
+  }
+
   /* ---------- footer (与主页一致) ---------- */
   footer {
     margin-top: 2.4em;
@@ -273,7 +287,8 @@
     </div>
   </section>
 
-  <p>你访问的路径：<code id="path-display">/</code></p>
+  <p class="path-label">你访问的路径：</p>
+  <code id="path-display">/</code>
   <p class="muted">请求的路径不存在或已被归档。Halo 博客服务已于 2026 年停服，旧文章的快照会随时间淡出 Google 索引。</p>
   <p>你可能的去处：</p>
   <ul class="links">
