@@ -22,74 +22,18 @@
 <meta property="og:description" content="请求的路径不存在或已被归档。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.caishawn.store/">
-<meta property="og:image" content="https://www.caishawn.store/assets/img/favicon-256.png">
+<meta property="og:image" content="https://www.caishawn.store/assets/img/og-image.png">
+<meta property="og:image:secure_url" content="https://www.caishawn.store/assets/img/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="小蔡一碟 — 咀嚼自我，随心一记">
 <meta property="og:locale" content="zh_CN">
 
-<!-- styles -->
+<!-- styles: base + shared fonts; 404-only styles live in 404.css (no inline <style>, strict-CSP friendly) -->
 <link rel="stylesheet" href="assets/css/terminal.css">
 <link rel="stylesheet" href="assets/css/fonts.css">
-
-<style>
-  /* ---------- links list ---------- */
-  ul.links {
-    list-style: none;
-    padding: 0;
-    margin: 1.5em 0;
-  }
-  ul.links li {
-    margin: 0.6em 0;
-    padding-left: 1.2em;
-    position: relative;
-  }
-  ul.links li::before {
-    content: "→";
-    color: var(--accent);
-    position: absolute;
-    left: 0;
-  }
-  ul.links a {
-    color: var(--foreground);
-    text-decoration: none;
-    transition: color .15s ease;
-  }
-  ul.links a:hover {
-    color: var(--accent);
-  }
-  ul.links a:focus-visible {
-    outline: 1px solid var(--accent);
-    outline-offset: 2px;
-  }
-  ul.links .label {
-    color: color-mix(in srgb, var(--foreground) 70%, transparent);
-    margin-left: 0.4em;
-  }
-
-  /* muted secondary text */
-  .muted {
-    color: color-mix(in srgb, var(--foreground) 55%, transparent);
-  }
-
-  /* code, kbd, pre, samp font-family is now in terminal.css */
-
-  /* visited path: inline label above, full-width code block below */
-  .path-label {
-    margin: 25px 0;
-  }
-  #path-display {
-    display: block;
-    margin: 0 0 16px 0;
-    padding: 8px 14px;
-    border-left: 3px solid var(--accent);
-    background: rgba(94, 165, 238, 0.12);
-    color: var(--accent);
-    word-break: break-all;
-  }
-
-  /* ---------- footer ---------- */
-  /* footer base (padding-top + border-top) now in terminal.css; 404 overrides margin-top here */
-  footer { margin-top: 2.4em; }
-
-</style>
+<link rel="stylesheet" href="assets/css/404.css">
 </head>
 <body>
 
@@ -139,16 +83,10 @@
   </a>
 </div>
 
-<!-- typewriter: shared with index.html, deferred so it doesn't block paint -->
+<!-- typewriter + app.js: shared with index.html, deferred so they don't block paint.
+     app.js 的 shared 部分在此页回显 #path-display（无动画、无交互）。 -->
 <script defer src="assets/js/typewriter.js"></script>
-
-<script>
-  // 仅展示当前访问路径；无动画、无交互
-  (function () {
-    var el = document.getElementById('path-display');
-    if (el) el.textContent = window.location.pathname + window.location.search;
-  })();
-</script>
+<script defer src="assets/js/app.js"></script>
 
 </body>
 </html>

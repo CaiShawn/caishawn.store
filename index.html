@@ -8,7 +8,7 @@
 <!-- canonical & basic SEO -->
 <link rel="canonical" href="https://www.caishawn.store/">
 <meta name="description" content="caishawn 个人主页 · 学习规划、爱好一览（PC / 手游 / 番剧 / 音乐）、友链与随笔。封存 2026 年起的小想法，欢迎慢逛。">
-<meta name="keywords" content="caishawn,小蔡一碟,个人主页,学习规划,爱好一览,友链,番剧,游戏,音乐,博客归档">
+<!-- 注：不再写 meta keywords——Google 等主流引擎早已不读它。 -->
 <meta name="author" content="caishawn">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
 <meta name="googlebot" content="index,follow">
@@ -34,12 +34,12 @@
 <meta property="og:description" content="caishawn 个人主页 · 学习规划、爱好一览（PC / 手游 / 番剧 / 音乐）、友链与随笔。封存 2026 年起的小想法，欢迎慢逛。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.caishawn.store/">
-<meta property="og:image" content="https://www.caishawn.store/assets/img/favicon-256.png">
-<meta property="og:image:secure_url" content="https://www.caishawn.store/assets/img/favicon-256.png">
+<meta property="og:image" content="https://www.caishawn.store/assets/img/og-image.png">
+<meta property="og:image:secure_url" content="https://www.caishawn.store/assets/img/og-image.png">
 <meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="256">
-<meta property="og:image:height" content="256">
-<meta property="og:image:alt" content="小蔡一碟 — caishawn favicon">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="小蔡一碟 — 咀嚼自我，随心一记">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:locale:alternate" content="en_US">
 
@@ -47,8 +47,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="小蔡一碟 - 咀嚼自我，随心一记">
 <meta name="twitter:description" content="caishawn 个人主页 · 学习规划、爱好一览（PC / 手游 / 番剧 / 音乐）、友链与随笔。">
-<meta name="twitter:image" content="https://www.caishawn.store/assets/img/favicon-256.png">
-<meta name="twitter:image:alt" content="小蔡一碟 — caishawn favicon">
+<meta name="twitter:image" content="https://www.caishawn.store/assets/img/og-image.png">
+<meta name="twitter:image:alt" content="小蔡一碟 — 咀嚼自我，随心一记">
 
 <!-- JSON-LD: Person Schema（控制 Google 知识面板 / 富媒体摘要） -->
 <script type="application/ld+json">
@@ -86,7 +86,7 @@
 }
 </script>
 
-<!-- JSON-LD: WebSite Schema（让 sitelinks searchbox 有机会出现） -->
+<!-- JSON-LD: WebSite Schema -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -97,11 +97,6 @@
   "author": {
     "@type": "Person",
     "name": "caishawn"
-  },
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://www.caishawn.store/?q={search_term_string}",
-    "query-input": "required name=search_term_string"
   }
 }
 </script>
@@ -202,7 +197,8 @@
  <h2>FRIENDS</h2>
  <blockquote><p lang="ja">何処にいても、人と人は繋がっている。</p></blockquote>
  <div class="friend-card">
- <img class="avatar" src="https://larkdrop.cafe/wp-content/uploads/2026/06/444-transparent.png" alt="Larkdrop avatar" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 160 160%22><rect width=%22160%22 height=%22160%22 fill=%22%23153489%22/><text x=%2280%22 y=%22100%22 font-size=%2272%22 font-family=%22monospace%22 fill=%22%235ea5ee%22 text-anchor=%22middle%22>L</text></svg>';this.classList.add('avatar-fallback');">
+ <!-- 头像已本地化；加载失败时由 app.js 换成本地 avatar-fallback.svg（去掉内联 onerror，兼容严格 CSP） -->
+ <img class="avatar" src="assets/img/friend-larkdrop.png" alt="Larkdrop avatar" loading="lazy">
  <div class="friend-meta">
  <div class="friend-name"><a href="https://larkdrop.cafe/" target="_blank" rel="noopener noreferrer">Larkdrop</a></div>
  <div class="friend-bio">涉猎音乐游戏电影小说二次元のでぶ</div>
@@ -217,8 +213,9 @@
 <section id="about" data-tab="about" aria-label="关于">
  <h2>ABOUT</h2>
  <blockquote><p>成为可供咀嚼之物乃是虚妄。</p></blockquote>
- <figure><img src="assets/img/42f05fd039bcc.webp" alt="Needy Girl Overdose 插画 by X@MikaPikaZo" width="4096" height="2289" loading="lazy" decoding="async" style="height: auto;"><figcaption><span><strong>Needy Girl Overdose</strong></span><strong> </strong><sub>by. X@MikaPikaZo</sub></figcaption></figure><hr><h3 lang="ja">個人紹介</h3><p>毕业于某天津大学、SE本科生。</p><p>居家少年，</p><p>生活在逐渐转变。</p><h3 lang="ja">内容物</h3><ul class="subjects"><li><p>学习物（经常性放弃）</p></li><li><p>兴趣物（习惯性沉迷）</p></li></ul>
+ <figure><img src="assets/img/42f05fd039bcc.webp" alt="Needy Girl Overdose 插画 by X@MikaPikaZo" width="4096" height="2289" loading="lazy" decoding="async"><figcaption><span><strong>Needy Girl Overdose</strong></span><strong> </strong><sub>by. X@MikaPikaZo</sub></figcaption></figure><hr><h3 lang="ja">個人紹介</h3><p>毕业于某天津大学、SE本科生。</p><p>居家少年，</p><p>生活在逐渐转变。</p><h3 lang="ja">内容物</h3><ul class="subjects"><li><p>学习物（经常性放弃）</p></li><li><p>兴趣物（习惯性沉迷）</p></li></ul>
  </section>
+</main>
 
 <footer>
  <p class="meta">
@@ -242,252 +239,12 @@
  - default: no nav, all four sections stacked and readable
  - with JS: nav injected + single-panel switching + hash routing
  - routes: '#~' (home), '#~/plans', '#~/habits', '#~/friends', '#~/about'
+
+ CSP 注：本站内联 JS 已全部移入 assets/js/app.js，Caddy 的
+ script-src 现在可以去掉 'unsafe-inline'（JSON-LD 块属非脚本
+ MIME 类型，不受 script-src 约束）。
 -->
-<script>
-/* typewriter 效果从外部脚本加载，详见 assets/js/typewriter.js */
-(function () {
- 'use strict';
- // fail-soft: if anything breaks, no-JS fallback (full content) still works
-
- function ready(fn) {
- if (document.readyState !== 'loading') fn();
- else document.addEventListener('DOMContentLoaded', fn);
- }
-
- /* ===== 偏好检测（减动效）======
-  * 模块顶部只算一次。供 router（goto/navTo/backTop）和 typewriter 共用。
-  */
- var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
- ready(function () {
- var main = document.getElementById('main');
- if (!main) return;
- var sections = [...main.querySelectorAll(':scope> section[data-tab]')];
- if (!sections.length) return;
- var framed = document.querySelector('section.framed-block');
- var HOME = 'home'; // virtual tab id for the home page
-
- function hashFor(tab) {
- return tab === HOME ? '#~' : '#~/' + tab;
- }
- function tabFromHash(h) {
- var s = (h || '').replace(/^#~?\/?/, '');
- return s === '' ? HOME : s;
- }
-
- // Title block also navigates to home
- var titleBlock = document.querySelector('.title-block');
- if (titleBlock) {
-  function goHome(e) {
-  if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
-  e.preventDefault();
-  goto(HOME);
-  }
-  titleBlock.addEventListener('click', goHome);
-  titleBlock.addEventListener('keydown', goHome);
- }
-
- var pathEl = document.getElementById('title-path');
- var currentTab = HOME; // tracked globally so pwd can read it
- function setPath(tab) {
- if (!pathEl) return;
- var path = tab === HOME ? '~' : '~/' + tab;
- pathEl.textContent = path;
- }
- function activate(tab) {
- currentTab = tab;
- var isHome = (tab === HOME);
- // toggle main sections
- sections.forEach(function (s) {
- s.classList.toggle('active', s.dataset.tab === tab);
- });
- /* 当前路由状态挂到 body[data-tab]：CSS 用属性选择器响应（取代 .has-js + .home 双开关） */
- document.body.dataset.tab = (tab === HOME ? 'home' : tab);
- // sync title-path with current location
- setPath(tab);
- // hash routing: replace, not push (no history noise)
- try { history.replaceState(null, '', hashFor(tab)); }
- catch (e) { location.hash = hashFor(tab); }
- }
- /* goto = activate 路由 + 清空 cmd-output。scroll=true 时额外滚到页首。 */
- function goto(tab, scroll) {
- activate(tab);
- var out = document.getElementById('cmd-output');
- if (out) out.replaceChildren();
- if (scroll) window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
- }
-
- // initial: from hash, else home
- var initial = tabFromHash(location.hash);
- var exists = (initial === HOME) || sections.some(function (s) { return s.dataset.tab === initial; });
- goto(exists ? initial : HOME);
-
- // respond to back/forward
- window.addEventListener('hashchange', function () {
- var t = tabFromHash(location.hash);
- var ok = (t === HOME) || sections.some(function (s) { return s.dataset.tab === t; });
- if (ok) goto(t);
- });
-
- // ===== Footer nav: prev / top / next (4-tab cycle; home is OUTSIDE the loop) =====
- // ORDER 不含 HOME：plans ↔ habits ↔ friends ↔ about 双向循环
- // 首页不显示箭头 → 进入循环只能通过命令或 hash，navTo 只需处理循环部分
- var ORDER = sections.map(function (s) { return s.dataset.tab; });
- function navTo(dir) {
-  var i = ORDER.indexOf(currentTab);
-  // 箭头在首页隐藏：调用 navTo 时 currentTab 必然在 ORDER 中
-  var target = ORDER[(i + dir + ORDER.length) % ORDER.length];
-  goto(target, true);
- }
- var backTop = document.querySelector('.back-to-top');
- if (backTop) {
-  backTop.addEventListener('click', function () {
-   window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
-  });
- }
- var navBtns = document.querySelectorAll('.nav-btn');
- navBtns.forEach(function (btn) {
-  btn.addEventListener('click', function () {
-   navTo(parseInt(btn.getAttribute('data-nav'), 10) || 0);
-  });
- });
-
- /* typewriter 效果已抽出为 assets/js/typewriter.js（独立 <script defer> 加载） */
-
- // ===== Interactive command prompt =====
- (function promptInit() {
-  /* 顶部唯一 prompt：共享 #cmd-form / #cmd-output */
-  var form = document.getElementById('cmd-form');
-  if (!form) return;
-  var input = form.querySelector('input');
-  var out = document.getElementById('cmd-output');
-  if (!input || !out) return;
-
-  /* sections / HOME / currentTab / goto 均从外层 ready() 闭包取值——不在这里重复声明 */
-  var aboutData = {
-   name: 'Cai Shawn',
-   edu:  'TJU SE-grad',
-   vibe: 'engineer',
-   loc:  'Hubei_HG',
-   bio:  '咀嚼自我，随心一记'
-  };
-  var HELP = [
-   'whoami            short bio',
-   'ls                list sections',
-   'cd <section>      open a section',
-   'clear             clear output'
-  ];
-
-  /* 每个 output 独立一份 runner（line/appendText/appendKw/append 闭包到自己的 out） */
-  function makeRunner(out) {
-   function append(node) {
-    out.appendChild(node);
-    node.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-   }
-   function line(text, cls) {
-    var p = document.createElement('p');
-    p.className = 'line' + (cls ? ' ' + cls : '');
-    p.textContent = text;
-    return p;
-   }
-   /* DOM-API 辅助：所有数据走 textContent / createTextNode，无 innerHTML，避免拼接 HTML 字符串带来的 XSS */
-   function appendText(parent, s) {
-    parent.appendChild(document.createTextNode(s));
-   }
-   function appendKw(parent, label) {
-    var s = document.createElement('span');
-    s.className = 'kw';
-    s.textContent = label;
-    parent.appendChild(s);
-   }
-
-   /* ---- 命令注册表 ----
-    * 每个 handler 纯函数: ({ cmd, head, rest }) → result
-    * result 字段（均可选）：
-    *   lines  要追加的 <p class="line[...]"> 节点数组
-    *   goto   切到这个 tab
-    *   scroll 切 tab 后是否滚到页首
-    *   clear  是否清空 cmd-output
-    */
-   var commands = {
-    help: function () { return { lines: HELP.map(line) }; },
-    whoami: function () {
-     var p = document.createElement('p');
-     p.className = 'line';
-     appendKw(p, 'name'); appendText(p, ': ' + aboutData.name + ' ');
-     appendKw(p, 'edu');  appendText(p, ': ' + aboutData.edu + ' ');
-     appendKw(p, 'loc');  appendText(p, ': ' + aboutData.loc);
-     return { lines: [p] };
-    },
-    cat: function (ctx) {
-     return /motto\.txt/.test(ctx.cmd)
-      ? { lines: [line(aboutData.bio)] }
-      : { lines: [line("cat: try 'motto.txt'", 'err')] };
-    },
-    ls: function () {
-     var items = sections.map(function (s) { return '~/' + s.dataset.tab; });
-     return { lines: [line('~ ' + items.join(' '))] };
-    },
-    pwd: function () {
-     return { lines: [line(currentTab === HOME ? '~' : '~/' + currentTab)] };
-    },
-    cd: function (ctx) {
-     var target = ctx.rest.replace(/[\/~]/g, '');
-     var resolved;
-     if (target === '' || target === '~')                          resolved = HOME;
-     else if (sections.some(function (s) { return s.dataset.tab === target; })) resolved = target;
-     if (!resolved) return { lines: [line("cd: no such section: " + target + ". try 'ls'.", 'err')] };
-     return { goto: resolved, scroll: true };
-    },
-    clear: function () { return { clear: true }; },
-   };
-   /* 别名：'?' / '？' = help；'cls' = clear */
-   commands['?']   = commands.help;
-   commands['？']  = commands.help;
-   commands.cls    = commands.clear;
-
-   function run(raw) {
-    var cmd = raw.trim();
-    if (!cmd) return;
-    append(line('> ' + cmd, 'echo'));
-    var parts = cmd.split(/\s+/);
-    var head = parts[0].toLowerCase();
-    var rest = parts.slice(1).join(' ');
-
-    var handler = commands[head];
-    if (!handler) {
-     append(line("command not found: " + head + ". try 'help'.", 'err'));
-     return;
-    }
-    var r = handler({ cmd: cmd, head: head, rest: rest }) || {};
-    /* 顺序：先 goto（自带清空）→ 后追加 lines → 保留 goto 后才追加的反馈行可见 */
-    if (r.goto) goto(r.goto, r.scroll);
-    else if (r.clear) out.replaceChildren();
-    (r.lines || []).forEach(append);
-   }
-   return { run: run };
-  }
-
-  var runner = makeRunner(out);
-  form.addEventListener('submit', function (e) {
-   e.preventDefault();
-   runner.run(input.value);
-   input.value = '';
-   input.focus();
-  });
-
-  // auto-focus on desktop only (don't steal focus on touch devices)
-  if (matchMedia && matchMedia('(hover: hover)').matches) {
-   window.addEventListener('load', function () { input.focus({ preventScroll: true }); });
-  }
- })();
-
- document.body.classList.add('app');
- });
-})();
-</script>
-
-<!-- typewriter: shared with 404.html, deferred so it doesn't block paint -->
+<script defer src="assets/js/app.js"></script>
 <script defer src="assets/js/typewriter.js"></script>
 
 </body>

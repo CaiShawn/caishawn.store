@@ -1,0 +1,66 @@
+/* ----------------------------------------------------------------- *
+ * 404.css — 404.html-only styles                                     *
+ *                                                                    *
+ * Extracted from 404.html's inline <style> so the page ships with    *
+ * zero inline CSS/JS — under a strict CSP, style-src no longer       *
+ * needs 'unsafe-inline'. Base theme lives in terminal.css.           *
+ * ----------------------------------------------------------------- */
+
+/* ---------- links list ---------- */
+ul.links {
+  list-style: none;
+  padding: 0;
+  margin: 1.5em 0;
+}
+ul.links li {
+  margin: 0.6em 0;
+  padding-left: 1.2em;
+  position: relative;
+}
+ul.links li::before {
+  content: "→";
+  color: var(--accent);
+  position: absolute;
+  left: 0;
+}
+ul.links a {
+  color: var(--foreground);
+  text-decoration: none;
+  transition: color .15s ease;
+}
+ul.links a:hover {
+  color: var(--accent);
+}
+ul.links a:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+}
+ul.links .label {
+  color: color-mix(in srgb, var(--foreground) 70%, transparent);
+  margin-left: 0.4em;
+}
+
+/* muted secondary text */
+.muted {
+  color: color-mix(in srgb, var(--foreground) 55%, transparent);
+}
+
+/* code, kbd, pre, samp font-family is now in terminal.css */
+
+/* visited path: inline label above, full-width code block below */
+.path-label {
+  margin: 25px 0;
+}
+#path-display {
+  display: block;
+  margin: 0 0 16px 0;
+  padding: 8px 14px;
+  border-left: 3px solid var(--accent);
+  background: rgba(94, 165, 238, 0.12);
+  color: var(--accent);
+  word-break: break-all;
+}
+
+/* ---------- footer ---------- */
+/* footer base (padding-top + border-top) now in terminal.css; 404 overrides margin-top here */
+footer { margin-top: 2.4em; }
