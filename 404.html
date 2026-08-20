@@ -159,11 +159,15 @@
   }
   ul.links a {
     color: var(--foreground);
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    text-decoration: none;
+    transition: color .15s ease;
   }
   ul.links a:hover {
     color: var(--accent);
+  }
+  ul.links a:focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: 2px;
   }
   ul.links .label {
     color: color-mix(in srgb, var(--foreground) 70%, transparent);
