@@ -184,6 +184,11 @@
     margin-left: 0.4em;
   }
 
+  /* muted secondary text */
+  .muted {
+    color: color-mix(in srgb, var(--foreground) 55%, transparent);
+  }
+
   /* ---------- footer (与主页一致) ---------- */
   footer {
     margin-top: 2.4em;
@@ -264,7 +269,7 @@
   </section>
 
   <p>你访问的路径：<code id="path-display">/</code></p>
-  <p>请求的路径不存在或已被归档。Halo 博客服务已于 2026 年停服，旧文章的快照会随时间淡出 Google 索引。</p>
+  <p class="muted">请求的路径不存在或已被归档。Halo 博客服务已于 2026 年停服，旧文章的快照会随时间淡出 Google 索引。</p>
   <p>你可能的去处：</p>
   <ul class="links">
     <li><a href="/">/</a><span class="label">个人主页（学习规划、爱好一览、友链）</span></li>
