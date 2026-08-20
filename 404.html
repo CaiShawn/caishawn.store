@@ -120,21 +120,19 @@
     word-break: break-all;
   }
 
-  /* ---------- ASCII art + home button row ---------- */
+  /* ---------- aside comment + home button row ---------- */
   .ascii-row {
     display: flex;
     align-items: center;
     gap: 16px;
     margin: 20px 0 0 0;
   }
-  .ascii-row .ascii {
+  .ascii-row .aside {
     color: var(--accent);
     opacity: 0.7;
     margin: 0;
-    line-height: 1.25;
     font-size: 0.92em;
-    white-space: pre;
-    overflow-x: auto;
+    line-height: 1.25;
     flex: 1 1 auto;
     min-width: 0;
   }
@@ -266,12 +264,7 @@
   <section class="index-content framed" aria-label="404 错误信息">
     <h1>404 — path not found</h1>
     <div class="ascii-row">
-      <pre class="ascii" aria-hidden="true">
-╭───────────────────────────────╮
-│  The blog is offline,         │
-│  but the home is still on.    │
-╰───────────────────────────────╯
-      </pre>
+      <p class="aside">// The blog is offline, but the home is still on.</p>
       <a href="/" class="home-btn" aria-label="回到首页">↩ Home</a>
     </div>
   </section>
