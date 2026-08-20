@@ -115,14 +115,14 @@
 </head>
 <body>
 
-<div class="site-title logo" aria-label="网站标识">
- <span class="title-block"><span class="title-path-prefix">caishawn@</span><span class="title-path" id="title-path">~</span></span>
-</div>
+<header class="site-title logo" aria-label="网站标识">
+ <a href="#~" class="title-block" aria-label="返回首页"><span class="title-path-prefix">caishawn@</span><span class="title-path" id="title-path">~</span></a>
+</header>
 
 <section class="index-content framed" aria-label="入口介绍">
  <h1 class="typed-text" data-typed="true">小蔡一碟</h1>
- <p class="subtitle">咀嚼自我，随心一记</p>
- <p class="project-link">
+ <p class="aside">// 咀嚼自我，随心一记</p>
+ <p class="cta-link">
   <a href="https://caishawn.github.io/" target="_blank" rel="noopener noreferrer" class="typed-text" data-typed="true">Github Pages - 作品集<span class="caret" aria-hidden="true"></span></a>
  </p>
 </section>
@@ -303,9 +303,6 @@
  // Title block also navigates to home
  var titleBlock = document.querySelector('.title-block');
  if (titleBlock) {
-  titleBlock.setAttribute('role', 'link');
-  titleBlock.setAttribute('tabindex', '0');
-  titleBlock.setAttribute('aria-label', '返回首页');
   function goHome(e) {
   if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
   e.preventDefault();

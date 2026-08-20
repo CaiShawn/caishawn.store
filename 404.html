@@ -114,42 +114,6 @@
     word-break: break-all;
   }
 
-  /* ---------- aside comment + home button row ---------- */
-  .ascii-row {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin: 20px 0 0 0;
-  }
-  .ascii-row .aside {
-    color: var(--accent);
-    opacity: 0.7;
-    margin: 0;
-    font-size: 0.92em;
-    line-height: 1.25;
-    flex: 1 1 auto;
-    min-width: 0;
-  }
-  .home-btn {
-    flex: 0 0 auto;
-    color: var(--accent);
-    text-decoration: none;
-    padding: 6px 12px;
-    border: 1px solid var(--accent);
-    font-size: 0.85em;
-    font-family: inherit;
-    background: transparent;
-    transition: background 0.15s ease, color 0.15s ease;
-  }
-  .home-btn:hover {
-    background: var(--accent);
-    color: var(--background);
-  }
-  .home-btn:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
   /* ---------- links list ---------- */
   ul.links {
     list-style: none;
@@ -255,14 +219,6 @@
     .site-title { height: 44px; margin-bottom: 24px; }
     .title-block { font-size: 16px; padding: 0 16px; }
     section.index-content.framed { padding: 24px 22px; }
-    .ascii-row {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 12px;
-    }
-    .home-btn {
-      align-self: flex-end;
-    }
   }
 
 </style>
@@ -270,25 +226,25 @@
 <body>
 
 <!-- header: site-title 样式与主页一致，路径 ~/404，点击回首页 -->
-<a href="/" class="site-title logo" aria-label="返回首页">
-  <span class="title-block">
+<header class="site-title logo">
+  <a href="/" class="title-block" aria-label="返回首页">
     <span class="title-path-prefix">caishawn@</span><span class="title-path">~/404</span>
-  </span>
-</a>
+  </a>
+</header>
 
 <main id="main">
   <section class="index-content framed" aria-label="404 错误信息">
     <h1 class="typed-text" data-typed="true">404 — path not found</h1>
-    <div class="ascii-row">
-      <p class="aside">// The blog is offline,<br>// but the home is still on.</p>
-      <a href="/" class="home-btn" aria-label="回到首页">↩ Home</a>
-    </div>
+    <p class="aside">// The blog is offline,<br>// but the home is still on.</p>
+    <p class="cta-link">
+      <a href="/" class="typed-text" data-typed="true">↩ Home<span class="caret" aria-hidden="true"></span></a>
+    </p>
   </section>
 
   <h3 class="path-label">你访问的路径：</h3>
   <code id="path-display">/</code>
   <p class="muted">请求的路径不存在或已被归档。</p>
-  <p class="muted">// Halo 博客服务已于 2026 年停服 —— 服务器拿去养🦞了。</p>
+  <p class="aside">// Halo <span title="原因：服务器被拿去养🦞了 :P">已光荣退休</span></p>
   <h3>你可能的去处：</h3>
   <ul class="links">
     <li><a href="/">/</a><span class="label">个人主页（学习规划、爱好一览、友链）</span></li>
