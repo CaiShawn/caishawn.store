@@ -170,48 +170,50 @@
     margin-left: 0.4em;
   }
 
-  /* ---------- action buttons ---------- */
-  .actions {
+  /* ---------- footer-nav (与主页一致) ---------- */
+  .footer-nav {
     display: flex;
-    gap: 12px;
-    margin: 1.6em 0 0.4em;
-    flex-wrap: wrap;
-  }
-  .actions button,
-  .actions a {
-    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 18px;
-    background: var(--accent);
-    color: var(--background);
-    font-family: inherit;
-    font-size: 0.95em;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-decoration: none;
-    border: 0;
-    cursor: pointer;
+    justify-content: center;
+    gap: 2px;
+    margin: 6px 0 4px;
   }
-  .actions button:hover:not(:disabled),
-  .actions a:hover {
-    outline: 1px solid var(--accent);
-    outline-offset: 2px;
-    background: color-mix(in srgb, var(--accent) 85%, var(--foreground));
-  }
-  .actions .ghost {
+  .footer-nav button,
+  .footer-nav a {
+    padding: 2px 8px;
+    font: inherit;
+    font-size: 0.78em;
+    color: color-mix(in srgb, var(--foreground) 55%, transparent);
     background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: color .15s ease;
+  }
+  .footer-nav button:hover,
+  .footer-nav button:focus-visible,
+  .footer-nav a:hover,
+  .footer-nav a:focus-visible {
     color: var(--accent);
-    outline: 1px solid var(--accent);
-    outline-offset: -1px;
+    outline: none;
   }
-  .actions .ghost:hover {
-    background: var(--accent);
-    color: var(--background);
-  }
-  .actions button:disabled {
+  .footer-nav button:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+  }
+  .nav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.8em;
+    padding: 2px 0;
+    font-size: 1em !important;
+    line-height: 1;
+  }
+  .home-link {
+    display: inline-block;
+    padding: 2px 8px;
   }
 
   /* ---------- footer (与主页一致) ---------- */
@@ -298,11 +300,6 @@
     <li><a href="https://caishawn.github.io/" target="_blank" rel="noopener noreferrer">caishawn.github.io</a><span class="label">作品集 / Portfolio</span></li>
     <li><a href="https://github.com/CaiShawn" target="_blank" rel="noopener noreferrer">github.com/CaiShawn</a><span class="label">GitHub</span></li>
   </ul>
-
-  <div class="actions">
-    <button type="button" id="go-back" aria-label="返回上一页">← Go Back</button>
-    <a href="/" class="ghost" aria-label="回到首页">Home</a>
-  </div>
 </main>
 
 <footer>
@@ -311,6 +308,10 @@
     <span class="meta-dot" aria-hidden="true">·</span>
     <span class="meta-side right">vanilla HTML</span>
   </p>
+  <div class="footer-nav" role="group" aria-label="页面操作">
+    <button class="nav-btn" id="go-back" type="button" aria-label="返回上一页">←</button>
+    <a href="/" class="home-link" aria-label="回到首页">回到首页</a>
+  </div>
 </footer>
 
 <div class="beian">
