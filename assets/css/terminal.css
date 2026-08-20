@@ -42,6 +42,115 @@ h2 { font-size: calc(var(--font-size) * 1.25); }
 h3 { font-size: calc(var(--font-size) * 1.05); }
 h4, h5, h6 { font-size: calc(var(--font-size) * 1); }
 
+/* === header / titlebar (shared by index.html / 404.html) ===
+ *  Logo path strip pinned at the top of every page. The bar itself
+ *  has no chrome — just a flex row that centers the title-block.
+ *  title-block is wrapped in an <a> on both pages (home + 404), so
+ *  text-decoration is explicitly cleared here.
+ */
+.titlebar {
+ display: flex;
+ align-items: stretch;
+ justify-content: center;
+ height: 44px;
+ margin: 0 0 24px 0;
+ font-size: 0;
+ line-height: 1;
+ gap: 10px; /* reserved for future extension */
+ text-decoration: none;
+}
+.title-block {
+ color: var(--foreground);
+ font-size: 16px;
+ font-weight: 600;
+ letter-spacing: 0;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ gap: 4px;
+ padding: 0 15px;
+ line-height: 32px;
+ cursor: pointer;
+ user-select: none;
+ text-decoration: none;
+}
+.title-block:focus-visible {
+ outline: 2px solid var(--foreground);
+ outline-offset: 2px;
+}
+.title-path-prefix {
+ font-weight: 500;
+ font-size: 0.95em;
+ letter-spacing: 0.01em;
+ opacity: 0.65;
+ white-space: nowrap;
+}
+.title-path {
+ font-weight: 600;
+ font-size: 0.95em;
+ letter-spacing: 0.01em;
+ color: var(--foreground);
+ white-space: nowrap;
+}
+@media (max-width: 720px) {
+ .titlebar { height: 44px; margin-bottom: 18px; }
+ .title-block { font-size: 16px; padding: 0 12px; gap: 4px; }
+ .title-path { font-size: 0.82em; }
+}
+
+/* === framed block (shared by index.html / 404.html) ===
+ *  Solid-bordered "card" variant of <section>. Overrides the default
+ *  dashed-top-border + 25px padding from the section base rule with
+ *  a full 1px accent border + 30px padding. position/color are kept
+ *  from the 404 inline version so absolute-positioned children
+ *  (e.g. a future corner badge) and explicit text-color inheritance
+ *  behave identically on both pages.
+ */
+.framed-block {
+ border: 1px solid var(--accent);
+ padding: 30px 32px;
+ margin: 30px 0;
+ position: relative;
+ color: var(--foreground);
+}
+/* direct div children: muted small print under the intro (home) */
+.framed-block > div {
+ color: color-mix(in srgb, var(--foreground) 70%, transparent);
+ font-size: 0.95em;
+ margin: 40px 0 2px 0;
+}
+/* decorative face chip on the intro h1's aside */
+.framed-block sup.face {
+ font-size: 0.7em;
+ color: var(--accent);
+ margin-left: 4px;
+ letter-spacing: 0.15em;
+ vertical-align: super;
+ line-height: 0;
+}
+/* paragraph rhythm inside the framed block (404's rendered copy) */
+.framed-block p {
+ margin: 0 0 12px 0;
+}
+.framed-block p:last-of-type {
+ margin-bottom: 0;
+}
+/* inline code chips inside the framed block (heavily used by 404).
+ *  On index.html the global `border-radius: 0 !important` reset in
+ *  index.css overrides the 2px below; on 404.html (which does not
+ *  load index.css) the chip keeps its 2px corner. Intentional. */
+.framed-block code {
+ color: var(--accent);
+ background: rgba(94, 165, 238, 0.08);
+ padding: 1px 6px;
+ border-radius: 2px;
+ font-family: inherit;
+ word-break: break-all;
+}
+@media (max-width: 720px) {
+ .framed-block { padding: 24px 22px; }
+}
+
 /* === section container: top dashed border + 25px breathing room === */
 section {
  border-top: 1px dashed color-mix(in srgb, var(--foreground) 20%, transparent);

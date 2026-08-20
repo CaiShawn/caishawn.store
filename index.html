@@ -119,7 +119,7 @@
  <a href="#~" class="title-block" aria-label="返回首页"><span class="title-path-prefix">caishawn@store:</span><span class="title-path" id="title-path">~</span></a>
 </header>
 
-<section class="index-content framed" aria-label="入口介绍">
+<section class="framed-block" aria-label="入口介绍">
  <h1 class="typed-text" data-typed="true">小蔡一碟</h1>
  <p class="aside">// 咀嚼自我，随心一记</p>
  <p class="cta-link">
@@ -289,7 +289,7 @@
  if (!main) return;
  var sections = [...main.querySelectorAll(':scope> section[data-tab]')];
  if (!sections.length) return;
- var framed = document.querySelector('section.index-content.framed');
+ var framed = document.querySelector('section.framed-block');
  var HOME = 'home'; // virtual tab id for the home page
 
  function hashFor(tab) {

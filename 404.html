@@ -44,75 +44,8 @@
     flex-direction: column;
   }
 
-  /* ---------- header: titlebar (与主页一致) ---------- */
-  .titlebar {
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
-    height: 44px;
-    margin: 0 0 24px 0;
-    font-size: 0;
-    line-height: 1;
-    text-decoration: none;
-  }
-  .title-block {
-    color: var(--foreground);
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    padding: 0 15px;
-    line-height: 32px;
-    cursor: pointer;
-    user-select: none;
-    text-decoration: none;
-  }
-  .title-block:focus-visible {
-    outline: 2px solid var(--foreground);
-    outline-offset: 2px;
-  }
-  .title-path-prefix {
-    font-weight: 500;
-    font-size: 0.95em;
-    letter-spacing: 0.01em;
-    opacity: 0.65;
-    white-space: nowrap;
-  }
-  .title-path {
-    font-weight: 600;
-    font-size: 0.95em;
-    letter-spacing: 0.01em;
-    color: var(--foreground);
-  }
-
   /* ---------- main ---------- */
   main { flex: 1 0 auto; }
-
-  /* ---------- framed content block (与主页一致) ---------- */
-  section.index-content.framed {
-    border: 1px solid var(--accent);
-    padding: 30px 32px;
-    margin: 30px 0;
-    position: relative;
-    color: var(--foreground);
-  }
-  section.index-content.framed p {
-    margin: 0 0 12px 0;
-  }
-  section.index-content.framed p:last-of-type {
-    margin-bottom: 0;
-  }
-  section.index-content.framed code {
-    color: var(--accent);
-    background: rgba(94, 165, 238, 0.08);
-    padding: 1px 6px;
-    border-radius: 2px;
-    font-family: inherit;
-    word-break: break-all;
-  }
 
   /* ---------- links list ---------- */
   ul.links {
@@ -216,9 +149,6 @@
   /* ---------- responsive ---------- */
   @media (max-width: 720px) {
     body { padding: 20px 18px 50px 18px; }
-    .titlebar { height: 44px; margin-bottom: 24px; }
-    .title-block { font-size: 16px; padding: 0 16px; }
-    section.index-content.framed { padding: 24px 22px; }
   }
 
 </style>
@@ -233,7 +163,7 @@
 </header>
 
 <main id="main">
-  <section class="index-content framed" aria-label="404 错误信息">
+  <section class="framed-block" aria-label="404 错误信息">
     <h1 class="typed-text" data-typed="true">404 — path not found</h1>
     <p class="aside">// The blog is offline, but the home is still on.</p>
     <p class="cta-link">
@@ -251,6 +181,7 @@
     <li><a href="https://github.com/CaiShawn" target="_blank" rel="noopener noreferrer">github.com/CaiShawn</a><span class="label">GitHub</span></li>
   </ul>
 </main>
+
 <!-- footer -->
 <footer>
   <p class="meta">

@@ -4,8 +4,6 @@
  * Loaded only by the home page (index.html). terminal.css handles  *
  * the global theme; this file owns everything unique to home:      *
  *   · 55% body width + centering                                   *
- *   · framed section styles                                        *
- *   · titlebar (logo path)                                          *
  *   · friend cards, subjects, h2 rhythm                            *
  *   · footer, project link, meta, beian, footer-nav                *
  *   · interactive prompt (cmd-form / cmd-output)                   *
@@ -29,71 +27,9 @@ body {
  font-feature-settings: "calt" 1, "liga" 1;
 }
 
-/* ---------- framed index-content（位于 nav 与 prompt 之间） ---------- */
-section.index-content.framed {
- border: 1px solid var(--accent);
- padding: 30px 32px;
- margin: 30px 0;
-}
-
 /* (pre.prompt was replaced by the interactive cmd-form in prompt-block — see js-only rule below) */
 
-/* .aside and .cta-link moved to terminal.css (shared by index.html / 404.html) */
-section.index-content.framed> div {
- color: color-mix(in srgb, var(--foreground) 70%, transparent);
- font-size: 0.95em;
- margin: 40px 0 2px 0;
-}
-/* decorative face: small superscript chip on the intro (h1's aside) */
-section.index-content.framed sup.face {
- font-size: 0.7em;
- color: var(--accent);
- margin-left: 4px;
- letter-spacing: 0.15em;
- vertical-align: super;
- line-height: 0;
-}
-
-/* .subtitle merged into .aside (now shared via terminal.css) */
-
-/* ---------- titlebar ---------- */
-.titlebar {
- display: flex;
- align-items: stretch;
- justify-content: center; /* title-block 在 body 内水平居中 */
- /* 高度调高，让 title-block 垂直宽度更饱满 */
- height: 44px;
- margin: 0 0 24px 0;
- font-size: 0;
- line-height: 1;
- gap: 10px; /* 保留，用于未来扩展 */
-}
-.title-block {
- /* no background — text floats directly on body */
- color: var(--foreground); /* 米色字 → 深蓝背景上可读 */
- font-size: 16px; /* 随高度同步加大 */
- font-weight: 600;
- /* 用 padding 替代 letter-spacing，避免最后字符后多留 0.04em 间距 */
- letter-spacing: 0;
- display: flex;
- align-items: center;
- justify-content: center;
- gap: 4px; /* 前缀与路径之间的间距 */
- padding: 0 15px;
- line-height: 32px;
- cursor: pointer; /* 点击跳转首页 */
- user-select: none;
-}
-.title-block:focus-visible {
- outline: 2px solid var(--foreground);
- outline-offset: 2px;
-}
-/* .title-text: element removed */
-
-@media (max-width: 720px) {
- .titlebar { height: 44px; margin-bottom: 18px; }
- .title-block { font-size: 16px; padding: 0 16px; gap: 4px; }
-}
+/* .framed-block, .aside and .cta-link moved to terminal.css (shared by index.html / 404.html) */
 
 /* ---------- friend card avatar fallback ---------- */
 .friend-card img.avatar-fallback {
@@ -259,21 +195,6 @@ body:not(.app) .footer-nav { display: none; }
  vertical-align: -2px;
 }
 
-/* ---------- titlebar: dynamic path ---------- */
-.title-path-prefix {
- font-weight: 500;
- font-size: 0.95em;
- letter-spacing: 0.01em;
- opacity: 0.65;
- white-space: nowrap;
-}
-.title-path {
- font-weight: 600;
- font-size: 0.95em;
- letter-spacing: 0.01em;
- white-space: nowrap;
-}
-
 /* ---------- per-section command header (decorative, removed) ----------
  * 原始：<p class="cmd-line">cat X.md</p> + ::before '>' 作为"看起来在打命令"的装饰。
  * 已从 4 个 section 里删除全部 4 处 HTML 节点；保留这条规则是为了有人
@@ -360,8 +281,3 @@ body:not(.app) .footer-nav { display: none; }
  font-weight: 700;
 }
 .cmd-output .line.ok { color: inherit; }
-
-@media (max-width: 720px) {
- .title-block { padding: 0 12px; }
- .title-path { font-size: 0.82em; }
-}
