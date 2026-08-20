@@ -120,15 +120,42 @@
     word-break: break-all;
   }
 
-  /* ---------- ASCII art ---------- */
-  .ascii {
+  /* ---------- ASCII art + home button row ---------- */
+  .ascii-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 20px 0 0 0;
+  }
+  .ascii-row .ascii {
     color: var(--accent);
     opacity: 0.7;
-    margin: 20px 0 0 0;
+    margin: 0;
     line-height: 1.25;
     font-size: 0.92em;
     white-space: pre;
     overflow-x: auto;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .home-btn {
+    flex: 0 0 auto;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid var(--accent);
+    font-size: 0.85em;
+    font-family: inherit;
+    background: transparent;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .home-btn:hover {
+    background: var(--accent);
+    color: var(--background);
+  }
+  .home-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
 
   /* ---------- links list ---------- */
@@ -215,6 +242,14 @@
     .site-title { height: 44px; margin-bottom: 24px; }
     .title-block { font-size: 16px; padding: 0 16px; }
     section.index-content.framed { padding: 24px 22px; }
+    .ascii-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .home-btn {
+      align-self: flex-end;
+    }
   }
 </style>
 </head>
@@ -231,12 +266,15 @@
   <section class="index-content framed" aria-label="404 错误信息">
     <h1>404 — path not found</h1>
     <p>你访问的路径：<code id="path-display">/</code></p>
-    <pre class="ascii" aria-hidden="true">
+    <div class="ascii-row">
+      <pre class="ascii" aria-hidden="true">
 ╭───────────────────────────────╮
 │  The blog is offline,         │
 │  but the home is still on.    │
 ╰───────────────────────────────╯
-    </pre>
+      </pre>
+      <a href="/" class="home-btn" aria-label="回到首页">↩ Home</a>
+    </div>
   </section>
 
   <p>请求的路径不存在或已被归档。Halo 博客服务已于 2026 年停服，旧文章的快照会随时间淡出 Google 索引。</p>
