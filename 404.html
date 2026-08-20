@@ -72,8 +72,17 @@
     outline: 2px solid var(--foreground);
     outline-offset: 2px;
   }
-  .title-block .title-path {
-    color: var(--accent);
+  .title-path-prefix {
+    font-weight: 500;
+    font-size: 0.95em;
+    letter-spacing: 0.01em;
+    opacity: 0.65;
+    white-space: nowrap;
+  }
+  .title-path {
+    font-weight: 600;
+    font-size: 0.95em;
+    letter-spacing: 0.01em;
   }
 
   /* ---------- main ---------- */
@@ -226,26 +235,27 @@
   .meta-dot { color: var(--accent); }
 
   .beian {
-    margin-top: 8px;
-    padding-top: 8px;
     display: flex;
-    justify-content: center;
-    gap: 12px;
     flex-wrap: wrap;
+    gap: 14px 16px;
+    justify-content: center;
+    margin: 6px 0 24px;
     font-size: 0.72em;
-    color: color-mix(in srgb, var(--foreground) 80%, transparent);
+    color: color-mix(in srgb, var(--foreground) 45%, transparent);
   }
   .beian a {
     color: inherit;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
+    gap: 4px;
   }
   .beian a:hover { color: var(--accent); }
   .gongan-icon {
     width: 14px;
     height: 14px;
-    margin-right: 4px;
+    display: inline-block;
+    vertical-align: -2px;
   }
 
   /* ---------- responsive ---------- */
@@ -301,16 +311,17 @@
     <span class="meta-dot" aria-hidden="true">·</span>
     <span class="meta-side right">vanilla HTML</span>
   </p>
-  <div class="beian">
-    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">鄂ICP备2026015802号</a>
-    <a href="https://www.beian.gov.cn/" target="_blank" rel="noopener noreferrer">
-      <svg class="gongan-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-        <path d="M8 1 2 2.5V8c0 3 2.5 5.5 6 7 3.5-1.5 6-4 6-7V2.5L8 1zm0 1.4 5 1.2V8c0 2.4-2 4.5-5 5.7C5 12.5 3 10.4 3 8V3.6l5-1.2z"/>
-        <path d="M6.5 8 7.5 9 10 6.5l1 1L7.5 11l-2-2z"/>
-      </svg>鄂公网安备42110002000331号
-    </a>
-  </div>
 </footer>
+
+<div class="beian">
+  <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">鄂ICP备2026015802号</a>
+  <a href="https://www.beian.gov.cn/" target="_blank" rel="noopener noreferrer">
+    <svg class="gongan-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+      <path d="M8 1 2 2.5V8c0 3 2.5 5.5 6 7 3.5-1.5 6-4 6-7V2.5L8 1zm0 1.4 5 1.2V8c0 2.4-2 4.5-5 5.7C5 12.5 3 10.4 3 8V3.6l5-1.2z"/>
+      <path d="M6.5 8 7.5 9 10 6.5l1 1L7.5 11l-2-2z"/>
+    </svg>鄂公网安备42110002000331号
+  </a>
+</div>
 
 <script>
   // 1. 展示当前访问路径
