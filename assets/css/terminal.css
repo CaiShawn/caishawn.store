@@ -92,6 +92,11 @@ h4, h5, h6 { font-size: calc(var(--font-size) * 1); }
  color: var(--foreground);
  white-space: nowrap;
 }
+/* mobile: drop body side padding so content gets more horizontal room */
+@media (max-width: 720px) {
+ body { padding: 20px 18px 60px 18px; }
+}
+
 @media (max-width: 720px) {
  .titlebar { height: 44px; margin-bottom: 18px; }
  .title-block { font-size: 16px; padding: 0 12px; gap: 4px; }
@@ -169,6 +174,14 @@ html { box-sizing: border-box; }
  margin: 0;
  padding: 0;
 }
+/* === body layout primitive (shared by index.html / 404.html) ===
+ *  Single source of truth for the centered-card layout both pages
+ *  use: 720px max-width, 32/24/60 padding, flex-column with
+ *  min-height:100vh so <main> can fill remaining space and push
+ *  <footer> to the bottom of the viewport (sticky-footer trick).
+ *  Fira Code ligatures (calt + liga) enabled here too — previously
+ *  this was duplicated on index.html's body override.
+ */
 body {
  font-family: "Fira Code", "JetBrains Mono", Monaco, Consolas, "Sarasa Mono SC", monospace;
  font-size: var(--font-size);
@@ -176,11 +189,21 @@ body {
  line-height: var(--line-height);
  background-color: var(--background);
  color: var(--foreground);
+ font-feature-settings: "calt" 1, "liga" 1;
  text-rendering: optimizeLegibility;
  font-variant-ligatures: contextual;
  -webkit-overflow-scrolling: touch;
  -webkit-text-size-adjust: 100%;
+ max-width: 720px;
+ margin: 0 auto;
+ padding: 32px 24px 60px;
+ min-height: 100vh;
+ display: flex;
+ flex-direction: column;
 }
+
+/* main fills remaining vertical space in the flex-column body, so footer sticks to viewport bottom */
+main { flex: 1 0 auto; }
 
 /* === block elements get a default 25px vertical margin === */
 h1, h2, h3, h4, h5, h6,

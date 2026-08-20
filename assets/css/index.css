@@ -3,30 +3,21 @@
  *                                                                  *
  * Loaded only by the home page (index.html). terminal.css handles  *
  * the global theme; this file owns everything unique to home:      *
- *   · 55% body width + centering                                   *
  *   · friend cards, subjects, h2 rhythm                            *
  *   · footer margin override (base in terminal.css)                *
  *   · footer-nav (JS-driven prev/next/back-to-top)                 *
  *   · interactive prompt (cmd-form / cmd-output)                   *
  *   · progressive section routing (.app main > section ...)        *
  *                                                                  *
- * The `border-radius: 0 !important` reset stays here (not in       *
- * terminal.css) because 404.html legitimately uses a 2px rounded   *
- * corner on inline <code> chips inside its framed block.           *
+ * The body layout (720px centered card + sticky footer + font-     *
+ * feature-settings) lives in terminal.css. The                     *
+ * `border-radius: 0 !important` reset stays here because 404.html *
+ * legitimately uses a 2px rounded corner on inline <code> chips    *
+ * inside its framed block.                                         *
  * ----------------------------------------------------------------- */
 
 /* fully squared: zero out all rounded corners (override vendor) */
 *, *::before, *::after { border-radius: 0 !important; }
-
-/* layout: 55% width, centered */
-body {
- width: 55%;
- max-width: 1024px;
- margin: 0 auto;
- padding: 40px 0 80px 0;
- font-family: 'Fira Code', 'Sarasa Mono SC', monospace;
- font-feature-settings: "calt" 1, "liga" 1;
-}
 
 /* (pre.prompt was replaced by the interactive cmd-form in prompt-block — see js-only rule below) */
 
@@ -102,11 +93,6 @@ main > section { display: block; padding-top: 24px; }
  text-decoration: underline dotted;
  text-underline-offset: 3px;
  cursor: help;
-}
-
-/* responsive: on small screens use full width */
-@media (max-width: 720px) {
- body { width: auto; padding: 20px 18px 60px 18px; }
 }
 
 /* ---------- footer / project link ---------- */
