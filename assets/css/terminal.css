@@ -1,15 +1,14 @@
 /* ---------------------------------------------------------------- *
- * terminal.bundle.css — locally vendored subset of panr/terminal-css *
- * Source of truth (kept as reference archive):                     *
- *   assets/css/terminal.css                                         *
+ * terminal.css — base / reset / theme foundation for the site      *
+ * Originally vendored from panr/terminal-css and trimmed to only   *
+ * selectors actually exercised by index.html / 404.html.           *
  *                                                                  *
- * Selectors that the original terminal-css provided but the HTML    *
- * never exercises (settings UI, dialog, fieldset, code/kbd/pre,    *
- * table, input[type=checkbox|color|radio], select, mark, [hidden], *
- * hanchor, etc.) have been removed.                                 *
+ * Removed from the original: settings UI, dialog, fieldset,        *
+ * code/kbd/pre, table, input[type=checkbox|color|radio], select,   *
+ * mark, [hidden], hanchor, etc.                                    *
  *                                                                  *
  * The page's inline <style> overrides much of what remains; this    *
- * bundle is the base that other elements inherit / fall back on.    *
+ * file is the base that other elements inherit / fall back on.     *
  * ---------------------------------------------------------------- */
 
 /* === variables (kept identical to the inline :root in index.html) === */
@@ -207,3 +206,14 @@ h1, h2, h3, h4, h5, h6,
 b, strong,
 th,
 button { font-weight: 600; }
+
+/* === scrollbar (BSOD themed, webkit + firefox) ===
+ *  Applied globally; pages with overflow rely on this for the
+ *  accent-colored thumb against the background-colored track.
+ */
+* { scrollbar-width: thin; scrollbar-color: var(--accent) var(--background); }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb { background: var(--accent); }
+::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--accent) 80%, var(--foreground)); }
+::-webkit-scrollbar-corner { background: var(--background); }

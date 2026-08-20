@@ -108,7 +108,7 @@
 
 
 <!-- styles: classless terminal-css, locally vendored -->
-<link rel="stylesheet" href="assets/css/terminal.bundle.css">
+<link rel="stylesheet" href="assets/css/terminal.css">
 <link rel="stylesheet" href="assets/css/fonts.bundle.css">
 
 <style>
@@ -309,14 +309,6 @@ main > section { display: block; padding-top: 24px; }
 @media (max-width: 720px) {
  body { width: auto; padding: 20px 18px 60px 18px; }
 }
-
-/* ---------- scrollbar (BSOD themed, webkit + firefox) ---------- */
-* { scrollbar-width: thin; scrollbar-color: var(--accent) var(--background); }
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: var(--background); }
-::-webkit-scrollbar-thumb { background: var(--accent); }
-::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--accent) 80%, var(--foreground)); }
-::-webkit-scrollbar-corner { background: var(--background); }
 
 /* ---------- footer / project link ---------- */
 footer {
