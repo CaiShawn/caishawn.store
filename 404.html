@@ -189,6 +189,11 @@
     color: color-mix(in srgb, var(--foreground) 55%, transparent);
   }
 
+  /* override browser default: <code> uses ui-monospace stack, force our stack */
+  code, kbd, pre, samp {
+    font-family: 'Fira Code', 'Sarasa Mono SC', monospace;
+  }
+
   /* ---------- footer (与主页一致) ---------- */
   footer {
     margin-top: 2.4em;
