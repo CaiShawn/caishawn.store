@@ -27,7 +27,7 @@
 
 <!-- styles -->
 <link rel="stylesheet" href="assets/css/terminal.css">
-<link rel="stylesheet" href="assets/css/fonts.bundle.css">
+<link rel="stylesheet" href="assets/css/fonts.css">
 
 <style>
   /* ---------- base ---------- */
@@ -189,10 +189,7 @@
     color: color-mix(in srgb, var(--foreground) 55%, transparent);
   }
 
-  /* override browser default: <code> uses ui-monospace stack, force our stack */
-  code, kbd, pre, samp {
-    font-family: 'Fira Code', 'Sarasa Mono SC', monospace;
-  }
+  /* code, kbd, pre, samp font-family is now in terminal.css */
 
   /* visited path: inline label above, full-width code block below */
   .path-label {
@@ -281,7 +278,7 @@
 
 <main id="main">
   <section class="index-content framed" aria-label="404 错误信息">
-    <h1>404 — path not found</h1>
+    <h1 class="typed-text" data-typed="true">404 — path not found</h1>
     <div class="ascii-row">
       <p class="aside">// The blog is offline,<br>// but the home is still on.</p>
       <a href="/" class="home-btn" aria-label="回到首页">↩ Home</a>
@@ -317,6 +314,9 @@
     </svg>鄂公网安备42110002000331号
   </a>
 </div>
+
+<!-- typewriter: shared with index.html, deferred so it doesn't block paint -->
+<script defer src="assets/js/typewriter.js"></script>
 
 <script>
   // 仅展示当前访问路径；无动画、无交互
