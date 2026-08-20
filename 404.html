@@ -102,49 +102,9 @@
     word-break: break-all;
   }
 
-  /* ---------- footer (与主页一致) ---------- */
-  footer {
-    margin-top: 2.4em;
-    padding-top: 0;
-    border-top: 1px dashed var(--accent);
-  }
-  .meta {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    gap: 1em;
-    font-size: 0.78em;
-    color: color-mix(in srgb, var(--foreground) 80%, transparent);
-    margin: 5px 0;
-  }
-  .meta-side { color: inherit; }
-  .meta-side.left { text-align: right; }
-  .meta-side.right { text-align: left; }
-  .meta-dot { color: var(--accent); }
-
-  .beian {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px 16px;
-    justify-content: center;
-    margin: 6px 0 24px;
-    font-size: 0.72em;
-    color: color-mix(in srgb, var(--foreground) 45%, transparent);
-  }
-  .beian a {
-    color: inherit;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .beian a:hover { color: var(--accent); }
-  .gongan-icon {
-    width: 14px;
-    height: 14px;
-    display: inline-block;
-    vertical-align: -2px;
-  }
+  /* ---------- footer ---------- */
+  /* footer base (padding-top + border-top) now in terminal.css; 404 overrides margin-top here */
+  footer { margin-top: 2.4em; }
 
   /* ---------- responsive ---------- */
   @media (max-width: 720px) {
