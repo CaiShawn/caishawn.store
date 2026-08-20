@@ -1,0 +1,36 @@
+# robots.txt — caishawn.store
+# https://www.caishawn.store/
+
+User-agent: *
+Allow: /
+
+# 旧的 Halo 博客系统已停服，禁止抓取残留的归档路径以加速去索引
+Disallow: /archives/
+Disallow: /archives/*
+Disallow: /page/
+Disallow: /tag/
+Disallow: /category/
+Disallow: /search
+Disallow: /links
+Disallow: /admin
+Disallow: /api/
+
+# 站点地图
+Sitemap: https://www.caishawn.store/sitemap.xml
+
+# 主流爬虫显式放行（与 * 等价，但显式声明更稳妥）
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+# AI 爬虫：不主动屏蔽，但允许引用
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /

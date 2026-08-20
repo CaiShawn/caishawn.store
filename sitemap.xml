@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://www.caishawn.store/</loc>
+    <lastmod>2026-04-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.caishawn.store/assets/img/og-image.png</image:loc>
+      <image:title>小蔡一碟 — caishawn 个人主页</image:title>
+      <image:caption>caishawn 个人主页封面</image:caption>
+    </image:image>
+  </url>
+</urlset>
