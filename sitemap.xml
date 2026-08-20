@@ -7,9 +7,9 @@
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://www.caishawn.store/assets/img/og-image.png</image:loc>
-      <image:title>小蔡一碟 — caishawn 个人主页</image:title>
-      <image:caption>caishawn 个人主页封面</image:caption>
+      <image:loc>https://www.caishawn.store/assets/img/favicon-256.png</image:loc>
+      <image:title>小蔡一碟 — caishawn favicon</image:title>
+      <image:caption>caishawn 个人主页 256x256 favicon</image:caption>
     </image:image>
   </url>
 </urlset>
