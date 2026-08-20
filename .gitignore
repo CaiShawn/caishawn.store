@@ -1,6 +1,9 @@
 # source font backups + subsetting tool (per user request: 不上传)
 res/
 
+# large font source files (subset extracted to assets/css/fonts.bundle.css)
+assets/font/*.ttf
+
 # OS junk
 .DS_Store
 Thumbs.db
