@@ -61,7 +61,7 @@ html { box-sizing: border-box; }
  padding: 0;
 }
 body {
- font-family: monospace, Monaco, Consolas, "Ubuntu Mono", monospace;
+ font-family: "Fira Code", "JetBrains Mono", Monaco, Consolas, "Sarasa Mono SC", monospace;
  font-size: var(--font-size);
  font-weight: 400;
  line-height: var(--line-height);
