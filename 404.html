@@ -90,52 +90,41 @@
   /* ---------- main ---------- */
   main { flex: 1 0 auto; }
 
-  h1 {
+  /* ---------- framed content block (与主页一致) ---------- */
+  section.index-content.framed {
+    border: 1px solid var(--accent);
+    padding: 30px 32px;
+    margin: 30px 0;
+    position: relative;
+    color: var(--foreground);
+  }
+  section.index-content.framed h1 {
     color: var(--accent);
-    font-size: 2.2em;
-    margin: 0 0 0.5em 0;
+    margin: 0 0 16px 0;
+    font-size: 1.5em;
+    font-weight: 600;
     letter-spacing: 0.04em;
   }
-
-  .prompt {
+  section.index-content.framed p {
+    margin: 0 0 12px 0;
+  }
+  section.index-content.framed p:last-of-type {
+    margin-bottom: 0;
+  }
+  section.index-content.framed code {
     color: var(--accent);
-    margin-right: 0.6em;
-  }
-
-  /* ---------- typed-text caret ---------- */
-  .caret {
-    display: inline-block;
-    width: 0.55em;
-    height: 1em;
-    background: var(--accent);
-    margin-left: 2px;
-    vertical-align: -0.15em;
-    animation: blink 1s ease-in-out infinite;
-  }
-  .caret-typed {
-    animation: blink 2s ease-in-out infinite;
-  }
-  @keyframes blink { 50% { opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) {
-    .caret, .caret-typed { animation: none; }
-  }
-
-  /* ---------- path box ---------- */
-  .path-box {
     background: rgba(94, 165, 238, 0.08);
-    border-left: 3px solid var(--accent);
-    padding: 10px 14px;
-    margin: 0.4em 0 1.2em;
+    padding: 1px 6px;
+    border-radius: 2px;
+    font-family: inherit;
     word-break: break-all;
-    color: var(--accent);
-    font-size: 0.95em;
   }
 
   /* ---------- ASCII art ---------- */
   .ascii {
     color: var(--accent);
-    opacity: 0.65;
-    margin: 1.6em 0;
+    opacity: 0.7;
+    margin: 20px 0 0 0;
     line-height: 1.25;
     font-size: 0.92em;
     white-space: pre;
@@ -146,10 +135,10 @@
   ul.links {
     list-style: none;
     padding: 0;
-    margin: 1em 0 1.4em 0;
+    margin: 1.5em 0;
   }
   ul.links li {
-    margin: 0.5em 0;
+    margin: 0.6em 0;
     padding-left: 1.2em;
     position: relative;
   }
@@ -225,7 +214,7 @@
     body { padding: 20px 18px 50px 18px; }
     .site-title { height: 44px; margin-bottom: 24px; }
     .title-block { font-size: 16px; padding: 0 16px; }
-    h1 { font-size: 1.8em; }
+    section.index-content.framed { padding: 24px 22px; }
   }
 </style>
 </head>
@@ -239,20 +228,17 @@
 </a>
 
 <main id="main">
-  <h1 class="typed-text" data-typed="true">404 — path not found</h1>
-
-  <p>你访问的路径：</p>
-  <div class="path-box" id="path-box">/</div>
-
-  <p>请求的路径不存在或已被归档。<br>
-  Halo 博客服务已于 2026 年停服，旧文章的快照会随时间淡出 Google 索引。</p>
-
-  <pre class="ascii" aria-hidden="true">
-   ╭───────────────────────────────╮
-   │  The blog is offline,         │
-   │  but the home is still on.    │
-   ╰───────────────────────────────╯
-  </pre>
+  <section class="index-content framed" aria-label="404 错误信息">
+    <h1>404 — path not found</h1>
+    <p>你访问的路径：<code id="path-display">/</code></p>
+    <p>请求的路径不存在或已被归档。Halo 博客服务已于 2026 年停服，旧文章的快照会随时间淡出 Google 索引。</p>
+    <pre class="ascii" aria-hidden="true">
+╭───────────────────────────────╮
+│  The blog is offline,         │
+│  but the home is still on.    │
+╰───────────────────────────────╯
+    </pre>
+  </section>
 
   <p>你可能的去处：</p>
   <ul class="links">
@@ -281,36 +267,10 @@
 </div>
 
 <script>
-  // 1. 展示当前访问路径
+  // 仅展示当前访问路径；无动画、无交互
   (function () {
-    var box = document.getElementById('path-box');
-    if (box) box.textContent = window.location.pathname + window.location.search;
-  })();
-
-  // 2. typed-text 动画：从主页移植，遵循 prefers-reduced-motion
-  (function () {
-    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var el = document.querySelector('.typed-text[data-typed="true"]');
-    if (!el || reduced) return;
-    var text = el.textContent;
-    el.textContent = '';
-    var cur = document.createElement('span');
-    cur.className = 'caret caret-typed';
-    cur.setAttribute('aria-hidden', 'true');
-    el.appendChild(cur);
-    var i = 0;
-    function tick() {
-      if (i >= text.length) return;
-      cur.before(text[i++]);
-      var ch = text[i - 1];
-      var delay;
-      if (ch === '-')        delay = 600;
-      else if (ch === '/')   delay = 200;
-      else if (ch === ' ')   delay = 150;
-      else                   delay = 75 + Math.random() * 15;
-      setTimeout(tick, delay);
-    }
-    tick();
+    var el = document.getElementById('path-display');
+    if (el) el.textContent = window.location.pathname + window.location.search;
   })();
 </script>
 
