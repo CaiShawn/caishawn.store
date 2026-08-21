@@ -159,53 +159,95 @@ body:not(.app) .footer-nav { display: none; }
 .app .js-only { display: block; }
 /* 顶部 prompt-block 作为 <section>：覆盖 bundle 的 border-top + padding 默认值 */
 .prompt-block {
- margin: 15px 0;
+ margin: 30px 0;
  border-top: 0;
  padding: 0;
 }
+/* cmd-form 现在包含 output + prompt-line 两部分。终端窗口感设计：
+  - 实线 accent 边框（呼应 BSOD 蓝主题）
+  - 顶部 inset 1px 高光，模拟光源从上方
+  - 背景轻微顶深底浅渐变，给屏幕感
+  - padding 略宽松，"窗口内"留白 */
 .cmd-form {
+ display: flex;
+ flex-direction: column;
+ border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+ box-shadow:
+   inset 0 1px 0 color-mix(in srgb, var(--foreground) 12%, transparent),
+   inset 0 -1px 0 color-mix(in srgb, var(--background) 40%, transparent);
+ background: linear-gradient(
+   to bottom,
+   color-mix(in srgb, var(--foreground) 6%, transparent),
+   color-mix(in srgb, var(--foreground) 3%, transparent)
+ );
+ padding: 10px 14px;
+ color: color-mix(in srgb, var(--foreground) 70%, transparent);
+}
+/* prompt-line：prompt-mark + input 橫排 */
+.cmd-prompt-line {
  display: flex;
  align-items: center;
  gap: 0.5em;
- /* 无边框：聚焦也不加背景提示，仅凭 input caret 闪动。 */
- border: 1px solid transparent;
- padding: 6px 10px;
- background: transparent;
- color: color-mix(in srgb, var(--foreground) 70%, transparent);
 }
-.cmd-form .prompt-mark {
+.cmd-prompt-line .prompt-mark {
  color: var(--foreground);
  user-select: none;
  font-weight: 400;
+ font-size: 0.75em;  /* 与 input / cmd-output 统一 */
 }
-.cmd-form input {
+.cmd-prompt-line input {
  flex: 1;
  border: none;
  padding: 0;
  outline: none;
  background: transparent;
  color: var(--foreground);
- font: inherit;
+ font-family: inherit;        /* 保留 input 字体（不用 system 字体覆盖） */
+ font-size: 0.75em;            /* 与 cmd-output 统一：12px */
  appearance: none;
  caret-color: var(--accent);
 }
-.cmd-form input::placeholder {
+.cmd-prompt-line input::placeholder {
  color: color-mix(in srgb, var(--foreground) 35%, transparent);
 }
+/* output：复用 form 的边框/背景，不独立设。 */
 .cmd-output {
- /* 像 terminal 输出区：虚线边框 + 微弱背景，形成"代码框"视觉 */
- margin: 8px auto 0;
- max-width: 95%;
- border: 1px dashed color-mix(in srgb, var(--foreground) 22%, transparent);
- background: color-mix(in srgb, var(--foreground) 4%, transparent);
- padding: 8px 12px;
+ margin: 0 0 8px;
  font-size: 0.75em;
  color: color-mix(in srgb, var(--foreground) 70%, transparent);
  font-family: 'Fira Code', 'Sarasa Mono SC', monospace;
- max-height: calc(7 * 1.4em + 16px); /* 7 行 (1.4em each) + 上下 padding 16px */
+ max-height: calc(7 * 1.4em); /* 7 行 (1.4em each) */
  overflow-y: auto;
+ /* 隐藏滚动条但保留滚动能力（内容超 max-height 仍可滚）。 */
+ scrollbar-width: none;
+ -ms-overflow-style: none;
 }
+.cmd-output::-webkit-scrollbar { display: none; }
 .cmd-output:empty { display: none; }
+/* hints 区：input 下方的临时提示（Tab 多匹配等）。仅 1 行：
+ * 超出截断不滚；input 变化时由 JS 立即清空。
+ * 颜色更淡、紧贴 input、不参与历史轨迹。 */
+.cmd-hints {
+ font-size: 0.75em;
+ font-family: 'Fira Code', 'Sarasa Mono SC', monospace;
+ color: color-mix(in srgb, var(--foreground) 50%, transparent);
+ /* 无 margin/padding：empty 时 display:none，有内容时紧贴 prompt-line */
+ margin: 0;
+ padding: 0;
+ max-height: 1.4em;
+ overflow: hidden;
+}
+.cmd-hints:empty { display: none; }
+.cmd-hints .line.candidates {
+ display: block;
+ margin: 0;                    /* 覆盖 terminal.css 中 <p> 默认的 25px 垂直 margin */
+ white-space: nowrap;
+ overflow: hidden;
+ text-overflow: ellipsis;  /* 超出裁切，提示用户可继续输入 */
+ /* 无 padding-left：候选紧贴左边，与 input prompt-mark 对齐（同一列） */
+ min-height: 1.4em;
+ box-sizing: border-box;
+}
 .cmd-output .line {
  /* 纵向：每个 .line 独立占一行，min-height 制造行间空隙 */
  display: block;
@@ -217,7 +259,8 @@ body:not(.app) .footer-nav { display: none; }
  box-sizing: border-box;
 }
 .cmd-output .line.echo {
- color: var(--foreground);
+ color: var(--accent);   /* echo = "用户输入过"，accent 色突出 */
+ font-weight: 600;
  padding-left: 0;
 }
 .cmd-output .line.err {

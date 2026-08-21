@@ -124,11 +124,14 @@
 
 <section class="prompt-block js-only" aria-label="交互提示符">
  <form class="cmd-form" id="cmd-form" autocomplete="off">
-  <label for="cmd-input" class="visually-hidden">命令输入</label>
-  <span class="prompt-mark" aria-hidden="true">></span>
-  <input id="cmd-input" type="text" name="cmd" placeholder="?" spellcheck="false" autocapitalize="off" />
+  <div id="cmd-output" class="cmd-output" aria-live="polite"></div>
+  <div class="cmd-prompt-line">
+   <span class="prompt-mark" aria-hidden="true">></span>
+   <label for="cmd-input" class="visually-hidden">命令输入</label>
+   <input id="cmd-input" type="text" name="cmd" placeholder="?" spellcheck="false" autocapitalize="off" />
+  </div>
+  <div id="cmd-hints" class="cmd-hints" aria-live="polite"></div>
  </form>
- <div id="cmd-output" class="cmd-output" aria-live="polite"></div>
 </section>
 
 <main id="main"><section id="plans" data-tab="plans" aria-label="规划">

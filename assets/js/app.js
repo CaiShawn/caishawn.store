@@ -147,6 +147,7 @@
       if (!form) return;
       var input = form.querySelector('input');
       var out = document.getElementById('cmd-output');
+      var hints = document.getElementById('cmd-hints');
       if (!input || !out) return;
 
       /* sections / HOME / currentTab / goto 均从外层 ready() 闭包取值——不在这里重复声明 */
@@ -156,11 +157,11 @@
         loc:   'Guangzhou',
         /* 第二行：贴合本站内容（PLANS / HABITS / 封存的小想法）。 */
         intro: 'chewing on ideas, jotting down plans, habits, and small thoughts.',
-        bio:   '咀嚼自我，随心一记'  /* 仅 cat motto.txt 用 */
+        email: 'caishawn@163.com'   /* 仅 cat contact.txt 用 */
       };
 
       /* 每个 output 独立一份 runner（line/append 闭包到自己的 out） */
-      function makeRunner(out) {
+      function makeRunner(out, hints) {
         function append(node) {
           out.appendChild(node);
           node.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
@@ -194,9 +195,9 @@
             } },
           { name: 'cat',    desc: 'read a file', usage: 'cat <file>',
             fn: function (ctx) {
-              return /motto\.txt/.test(ctx.cmd)
-                ? { lines: [line(aboutData.bio)] }
-                : { lines: [line("cat: try 'motto.txt'", 'err')] };
+              return /contact\.txt/.test(ctx.cmd)
+                ? { lines: [line('e-mail:' + aboutData.email)] }
+                : { lines: [line("cat: try 'contact.txt'", 'err')] };
             } },
           { name: 'ls',     desc: 'list sections',
             fn: function () {
@@ -237,9 +238,94 @@
           return null;
         }
 
+        /* ---- ↑↓ history (stateful; hIdx 0..size，=size 表示在 draft 区) ---- */
+        function makeHistory() {
+          var list = [];
+          var hIdx = 0;
+          var draft = '';
+          return {
+            push: function (cmd) {
+              cmd = cmd.trim();
+              if (!cmd) return false;
+              /* 连续重复合并（shell HISTCONTROL=ignoredups 语义） */
+              if (list.length && list[list.length - 1] === cmd) return false;
+              list.push(cmd);
+              hIdx = list.length;
+              draft = '';
+              return true;
+            },
+            reset: function () { list = []; hIdx = 0; draft = ''; },
+            size: function () { return list.length; },
+            hIdx: function () { return hIdx; },
+            /* 首次进入历史前暂存当前 input；仅 hIdx===size 时生效 */
+            saveDraft: function (v) { if (hIdx === list.length) draft = v; },
+            /* delta: -1 = ↑, +1 = ↓；边界 clamp */
+            move: function (delta) {
+              if (delta === -1 && hIdx > 0)               hIdx--;
+              else if (delta === +1 && hIdx < list.length) hIdx++;
+            },
+            current: function () {
+              return hIdx === list.length ? draft : list[hIdx];
+            },
+            last: function () { return list.length ? list[list.length - 1] : ''; },
+            peek: function () {
+              return { list: list.slice(), hIdx: hIdx, draft: draft };
+            }
+          };
+        }
+        var history = makeHistory();
+
+        /* ---- Tab completion (返回新值 + matches 供 caller 决定是否列出) ----
+ * 两阶段：parts[2] 存在（已敲空格）→ 补参数；否则 → 补命令名。
+ * 参数表里没登记该命令则安静返回原值，不抢命令名路径。 */
+        function makeCompleter(cmds, aliasMap, args) {
+          var lastMatches = null;
+          function complete(value) {
+            var parts = value.split(/(\s+)/);  // 保留空白 token
+            var head  = (parts[0] || '').toLowerCase();
+            if (!head) { lastMatches = null; return value; }
+            if (parts[2] !== undefined) {
+              var candidates = args[head] || [];
+              var am = candidates.filter(function (a) { return a.startsWith(parts[2]); });
+              if (!am.length) { lastMatches = null; return value; }
+              if (am.length === 1) {
+                parts[2] = am[0];
+                lastMatches = null;
+                return parts.join('');
+              }
+              lastMatches = am;
+              return value;
+            }
+            var names = [];
+            for (var i = 0; i < cmds.length; i++) names.push(cmds[i].name);
+            for (var k in aliasMap) names.push(k);
+            var matches = names.filter(function (n) { return n.startsWith(head); });
+            if (!matches.length) { lastMatches = null; return value; }
+            if (matches.length === 1) {
+              parts[0] = matches[0];
+              lastMatches = null;
+              return parts.join('');
+            }
+            /* 多匹配：保持原值，caller 用 matches() 列出候选。 */
+            lastMatches = matches;
+            return value;
+          }
+          return {
+            complete: complete,
+            matches: function () { return lastMatches; }
+          };
+        }
+        /* 参数补全表：键 = 命令名，值 = 合法参数候选。只支持 1 个参数（parts[2]）。 */
+        var argTable = {
+          cat: ['contact.txt'],
+          cd:  sections.map(function (s) { return s.dataset.tab; })
+        };
+        var completer = makeCompleter(commands, aliases, argTable);
+
         function run(raw) {
           var cmd = raw.trim();
           if (!cmd) return;
+          history.push(cmd);
           var parts = cmd.split(/\s+/);
           var head = parts[0].toLowerCase();
           var rest = parts.slice(1).join(' ');
@@ -265,15 +351,55 @@
             (r.lines || []).forEach(append);
           }
         }
-        return { run: run };
+        return {
+          run: run,
+          history: history,
+          completer: completer,
+          /* Tab 多匹配时调用：调用者不需要知道 append 内部实现（append 是
+           * makeRunner 闭包内的 helper）。 */
+          listCandidates: function (names) {
+            /* Tab 多匹配提示：不进 cmd-output，进 cmd-hints（input 下方临时区）。
+             * 每次清后填，保证只有一行。 */
+            var target = hints || out;
+            target.replaceChildren();
+            target.appendChild(line('  ' + names.join('  '), 'candidates'));
+          }
+        };
       }
 
-      var runner = makeRunner(out);
+      var runner = makeRunner(out, hints);
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         runner.run(input.value);
         input.value = '';
         input.focus();
+      });
+
+      /* input event: 用户修改 input（打字/删字/粘贴）→ 立即清空 hints。
+ * 'input' event 在 value 改变时触发（与键入/paste/cut/JS set 都挂钩）。 */
+      input.addEventListener('input', function () {
+        if (hints && hints.firstChild) hints.replaceChildren();
+      });
+
+      /* keydown: ↑↓ 翻历史；Tab 补全。IME 输入中不抢。 */
+      input.addEventListener('keydown', function (e) {
+        if (e.isComposing || e.keyCode === 229) return;
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+          var h = runner.history;
+          if (e.key === 'ArrowUp'   && h.hIdx() === 0)         return;
+          if (e.key === 'ArrowDown' && h.hIdx() === h.size()) return;
+          e.preventDefault();
+          h.saveDraft(input.value);
+          h.move(e.key === 'ArrowUp' ? -1 : 1);
+          input.value = h.current();
+        } else if (e.key === 'Tab') {
+          if (!input.value) return;
+          e.preventDefault();
+          input.value = runner.completer.complete(input.value);
+          /* 多匹配：在 cmd-output 列出候选。 */
+          var ms = runner.completer.matches();
+          if (ms && ms.length > 1) runner.listCandidates(ms);
+        }
       });
 
       // auto-focus on desktop only (don't steal focus on touch devices)
