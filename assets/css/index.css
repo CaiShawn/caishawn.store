@@ -167,14 +167,11 @@ body:not(.app) .footer-nav { display: none; }
  display: flex;
  align-items: center;
  gap: 0.5em;
- /* 闲置无边框，仅 :focus-within 时显现 solid accent 反馈 */
+ /* 无边框：聚焦也不加背景提示，仅凭 input caret 闪动。 */
  border: 1px solid transparent;
  padding: 6px 10px;
  background: transparent;
  color: color-mix(in srgb, var(--foreground) 70%, transparent);
-}
-.cmd-form:focus-within {
- /* 故意留空：聚焦无任何背景提示，仅凭 input caret 闪动 */
 }
 .cmd-form .prompt-mark {
  color: var(--foreground);
@@ -202,10 +199,10 @@ body:not(.app) .footer-nav { display: none; }
  border: 1px dashed color-mix(in srgb, var(--foreground) 22%, transparent);
  background: color-mix(in srgb, var(--foreground) 4%, transparent);
  padding: 8px 12px;
- font-size: 0.92em;
+ font-size: 0.75em;
  color: color-mix(in srgb, var(--foreground) 70%, transparent);
  font-family: 'Fira Code', 'Sarasa Mono SC', monospace;
- max-height: 8.9em; /* 5 行 + padding */
+ max-height: calc(7 * 1.4em + 16px); /* 7 行 (1.4em each) + 上下 padding 16px */
  overflow-y: auto;
 }
 .cmd-output:empty { display: none; }
@@ -226,8 +223,3 @@ body:not(.app) .footer-nav { display: none; }
 .cmd-output .line.err {
  color: color-mix(in srgb, var(--foreground) 60%, var(--accent));
 }
-.cmd-output .line .kw {
- color: var(--accent);
- font-weight: 700;
-}
-.cmd-output .line.ok { color: inherit; }

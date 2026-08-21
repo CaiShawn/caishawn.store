@@ -151,20 +151,15 @@
 
       /* sections / HOME / currentTab / goto 均从外层 ready() 闭包取值——不在这里重复声明 */
       var aboutData = {
-        name: 'Cai Shawn',
-        edu:  'TJU SE-grad',
-        vibe: 'engineer',
-        loc:  'Hubei_HG',
-        bio:  '咀嚼自我，随心一记'
+        name:  'shawn',
+        title: 'software engineer',
+        loc:   'Guangzhou',
+        /* 第二行：贴合本站内容（PLANS / HABITS / 封存的小想法）。 */
+        intro: 'chewing on ideas, jotting down plans, habits, and small thoughts.',
+        bio:   '咀嚼自我，随心一记'  /* 仅 cat motto.txt 用 */
       };
-      var HELP = [
-        'whoami            short bio',
-        'ls                list sections',
-        'cd <section>      open a section',
-        'clear             clear output'
-      ];
 
-      /* 每个 output 独立一份 runner（line/appendText/appendKw/append 闭包到自己的 out） */
+      /* 每个 output 独立一份 runner（line/append 闭包到自己的 out） */
       function makeRunner(out) {
         function append(node) {
           out.appendChild(node);
@@ -176,80 +171,99 @@
           p.textContent = text;
           return p;
         }
-        /* DOM-API 辅助：所有数据走 textContent / createTextNode，无 innerHTML，避免拼接 HTML 字符串带来的 XSS */
-        function appendText(parent, s) {
-          parent.appendChild(document.createTextNode(s));
-        }
-        function appendKw(parent, label) {
-          var s = document.createElement('span');
-          s.className = 'kw';
-          s.textContent = label;
-          parent.appendChild(s);
-        }
 
         /* ---- 命令注册表 ----
-         * 每个 handler 纯函数: ({ cmd, head, rest }) → result
+         * 数组 + 元信息（desc / usage），help 由 makeHelp() 遍历生成；
+         * 新增命令只需填一项，help / dispatcher 都不必改。fn 仍是纯函数:
+         *   ({ cmd, head, rest }) → result
          * result 字段（均可选）：
          *   lines  要追加的 <p class="line[...]"> 节点数组
-         *   goto   切到这个 tab
+         *   goto   切到这个 tab；dispatcher 会在 out 追加 echo + pwd
          *   scroll 切 tab 后是否滚到页首
-         *   clear  是否清空 cmd-output
+         *   clear  是否清空 cmd-output（与 goto 互斥）
          */
-        var commands = {
-          help: function () { return { lines: HELP.map(line) }; },
-          whoami: function () {
-            var p = document.createElement('p');
-            p.className = 'line';
-            appendKw(p, 'name'); appendText(p, ': ' + aboutData.name + ' ');
-            appendKw(p, 'edu');  appendText(p, ': ' + aboutData.edu + ' ');
-            appendKw(p, 'loc');  appendText(p, ': ' + aboutData.loc);
-            return { lines: [p] };
-          },
-          cat: function (ctx) {
-            return /motto\.txt/.test(ctx.cmd)
-              ? { lines: [line(aboutData.bio)] }
-              : { lines: [line("cat: try 'motto.txt'", 'err')] };
-          },
-          ls: function () {
-            var items = sections.map(function (s) { return '~/' + s.dataset.tab; });
-            return { lines: [line('~ ' + items.join(' '))] };
-          },
-          pwd: function () {
-            return { lines: [line(currentTab === HOME ? '~' : '~/' + currentTab)] };
-          },
-          cd: function (ctx) {
-            var target = ctx.rest.replace(/[\/~]/g, '');
-            var resolved;
-            if (target === '' || target === '~')                          resolved = HOME;
-            else if (sections.some(function (s) { return s.dataset.tab === target; })) resolved = target;
-            if (!resolved) return { lines: [line("cd: no such section: " + target + ". try 'ls'.", 'err')] };
-            return { goto: resolved, scroll: true };
-          },
-          clear: function () { return { clear: true }; },
-        };
+        var commands = [
+          { name: 'help',   desc: 'show this help',
+            fn: function () { return { lines: makeHelp().map(line) }; } },
+          { name: 'whoami', desc: 'short bio',
+            fn: function () {
+              return { lines: [
+                line(aboutData.name + ' — ' + aboutData.title + ' based in ' + aboutData.loc + '.'),
+                line(aboutData.intro)
+              ] };
+            } },
+          { name: 'cat',    desc: 'read a file', usage: 'cat <file>',
+            fn: function (ctx) {
+              return /motto\.txt/.test(ctx.cmd)
+                ? { lines: [line(aboutData.bio)] }
+                : { lines: [line("cat: try 'motto.txt'", 'err')] };
+            } },
+          { name: 'ls',     desc: 'list sections',
+            fn: function () {
+              var items = sections.map(function (s) { return '~/' + s.dataset.tab; });
+              return { lines: [line('~ ' + items.join(' '))] };
+            } },
+          { name: 'pwd',    desc: 'print working directory',
+            fn: function () {
+              return { lines: [line(currentTab === HOME ? '~' : '~/' + currentTab)] };
+            } },
+          { name: 'cd',     desc: 'open a section', usage: 'cd <section>',
+            fn: function (ctx) {
+              var target = ctx.rest.replace(/[\/~]/g, '');
+              var resolved;
+              if (target === '' || target === '~')                          resolved = HOME;
+              else if (sections.some(function (s) { return s.dataset.tab === target; })) resolved = target;
+              if (!resolved) return { lines: [line("cd: no such section: " + target + ". try 'ls'.", 'err')] };
+              return { goto: resolved, scroll: true };
+            } },
+          { name: 'clear',  desc: 'clear output',
+            fn: function () { return { clear: true }; } },
+        ];
         /* 别名：'?' / '？' = help；'cls' = clear */
-        commands['?']   = commands.help;
-        commands['？']  = commands.help;
-        commands.cls    = commands.clear;
+        var aliases = { '?': 'help', '？': 'help', 'cls': 'clear' };
+
+        function makeHelp() {
+          /* usage 优先于 name；左对齐到 18 列后接 desc。 */
+          return commands.map(function (c) {
+            var use = c.usage || c.name;
+            return (use + ' '.repeat(Math.max(1, 18 - use.length))) + c.desc;
+          });
+        }
+        function resolve(head) {
+          var name = aliases[head] || head;
+          for (var i = 0; i < commands.length; i++) {
+            if (commands[i].name === name) return commands[i];
+          }
+          return null;
+        }
 
         function run(raw) {
           var cmd = raw.trim();
           if (!cmd) return;
-          append(line('> ' + cmd, 'echo'));
           var parts = cmd.split(/\s+/);
           var head = parts[0].toLowerCase();
           var rest = parts.slice(1).join(' ');
 
-          var handler = commands[head];
-          if (!handler) {
+          var c = resolve(head);
+          if (!c) {
+            append(line('> ' + cmd, 'echo'));
             append(line("command not found: " + head + ". try 'help'.", 'err'));
             return;
           }
-          var r = handler({ cmd: cmd, head: head, rest: rest }) || {};
-          /* 顺序：先 goto（自带清空）→ 后追加 lines → 保留 goto 后才追加的反馈行可见 */
-          if (r.goto) goto(r.goto, r.scroll);
-          else if (r.clear) out.replaceChildren();
-          (r.lines || []).forEach(append);
+          var r = c.fn({ cmd: cmd, head: head, rest: rest }) || {};
+          if (r.goto) {
+            /* 切 tab 时 out 由 goto 清空；之后回显命令 + pwd，模拟 shell。 */
+            goto(r.goto, r.scroll);
+            append(line('> ' + cmd, 'echo'));
+            append(line(currentTab === HOME ? '~' : '~/' + currentTab));
+          } else if (r.clear) {
+            /* clear：清空 output 但保留刚输入的命令（让用户看到“执行了 clear”）。 */
+            out.replaceChildren();
+            append(line('> ' + cmd, 'echo'));
+          } else {
+            append(line('> ' + cmd, 'echo'));
+            (r.lines || []).forEach(append);
+          }
         }
         return { run: run };
       }
